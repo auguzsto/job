@@ -1,0 +1,18 @@
+{
+    "name": "auguzsto/example",
+    "description": "Example jobs",
+    "autoload": {
+        "psr-4": {
+            "Auguzsto\\Example\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Matheus Augusto",
+            "email": "auguzsto@gmail.com"
+        }
+    ],
+    "require": {
+        "auguzsto/job": "dev-main"
+    }
+}

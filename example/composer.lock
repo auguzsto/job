@@ -1,0 +1,64 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "93c50586eb292614ccbed6f44151abe5",
+    "packages": [
+        {
+            "name": "auguzsto/job",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/auguzsto/job.git",
+                "reference": "aaca93297f09bf593f53acd2b6cf0b0df15a4dca"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/auguzsto/job/zipball/aaca93297f09bf593f53acd2b6cf0b0df15a4dca",
+                "reference": "aaca93297f09bf593f53acd2b6cf0b0df15a4dca",
+                "shasum": ""
+            },
+            "require": {
+                "composer-runtime-api": "^2.2.2",
+                "php": ">=8.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^12"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Auguzsto\\Job\\": "src/",
+                    "Auguzsto\\Job\\Tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Matheus Augusto",
+                    "email": "auguzsto@gmail.com"
+                }
+            ],
+            "description": "A simple and elegant tool for running processes in the background.",
+            "support": {
+                "issues": "https://github.com/auguzsto/job/issues",
+                "source": "https://github.com/auguzsto/job/tree/main"
+            },
+            "time": "2025-08-12T18:42:46+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "auguzsto/job": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {},
+    "platform-dev": {},
+    "plugin-api-version": "2.6.0"
+}
