@@ -11,7 +11,7 @@
         $args = json_decode($argv[2], true);
     }
 
-    $autoload = __DIR__."/../vendor/autoload.php";
+    $autoload = $_composer_autoload_path ?? __DIR__ . "/../vendor/autoload.php";
 
     if (!file_exists($autoload)) {
         exit("Autoload not found!");

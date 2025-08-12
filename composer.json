@@ -1,8 +1,10 @@
 {
     "name": "auguzsto/job",
+    "type": "library",
     "description": "A simple and elegant tool for running processes in the background.",
     "require": {
-        "php": ">=8.2"
+        "php": ">=8.2",
+        "composer-runtime-api": "^2.2.2"
     },
     "version": "0.0.1",
     "autoload": {
@@ -11,6 +13,9 @@
             "Auguzsto\\Job\\Tests\\": "tests/"
         }
     },
+    "bin": [
+        "bin/runner"
+    ],
     "authors": [
         {
             "name": "Matheus Augusto",

@@ -8,7 +8,7 @@ use Auguzsto\Job\JobException;
         public int $pid;
 
         public function __construct() {
-            $this->setRunner(__DIR__ . "/runner.php");
+            $this->setRunner(__DIR__ . "/../vendor/bin/runner");
         }
 
         public function execute(string $classmethod, array $args = []): bool {
