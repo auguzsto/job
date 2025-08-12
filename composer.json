@@ -2,6 +2,7 @@
     "name": "auguzsto/job",
     "type": "library",
     "description": "A simple and elegant tool for running processes in the background.",
+    "license": "MIT",
     "require": {
         "php": ">=8.2",
         "composer-runtime-api": "^2.2.2"
