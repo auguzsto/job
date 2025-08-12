@@ -22,7 +22,7 @@ require_once __DIR__ . "/../vendor/autoload.php";
 use Auguzsto\Job\Job;
 
     $job = new Job();
-    $job->execute("Auguzsto\Phpworker\Tests\Request::slow");
+    $job->execute("Auguzsto\Job\Tests\Request::slow");
     print($worker->pid);
 ```
 When executing the job, the PID of the background process is created and stored in the object.
