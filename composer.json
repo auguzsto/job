@@ -1,0 +1,23 @@
+{
+    "name": "auguzsto/job",
+    "description": "A simple and elegant tool for running processes in the background.",
+    "require": {
+        "php": ">=8.2"
+    },
+    "version": "0.0.1",
+    "autoload": {
+        "psr-4": {
+            "Auguzsto\\Job\\": "src/",
+            "Auguzsto\\Job\\Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Matheus Augusto",
+            "email": "auguzsto@gmail.com"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^12"
+    }
+}
