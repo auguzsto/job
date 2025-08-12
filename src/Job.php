@@ -8,7 +8,7 @@ use Auguzsto\Job\JobException;
         public int $pid;
 
         public function __construct() {
-            $this->setRunner(__DIR__ . "/../vendor/bin/runner");
+            $this->setRunner(__DIR__ . "/runner");
         }
 
         public function execute(string $classmethod, array $args = []): bool {
@@ -30,6 +30,7 @@ use Auguzsto\Job\JobException;
                 $args = escapeshellarg(json_encode($args));;
                 
                 $cmd = "php $runner $classmethod $args > /dev/null 2>&1 & echo $!";
+                print($cmd);
                 exec($cmd, $output);
 
                 if (!empty($output)) {

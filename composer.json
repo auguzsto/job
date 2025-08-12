@@ -13,9 +13,6 @@
             "Auguzsto\\Job\\Tests\\": "tests/"
         }
     },
-    "bin": [
-        "bin/runner"
-    ],
     "authors": [
         {
             "name": "Matheus Augusto",

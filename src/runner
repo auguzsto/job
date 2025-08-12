@@ -11,15 +11,15 @@
         $args = json_decode($argv[2], true);
     }
 
-    $autoload = $_composer_autoload_path ?? __DIR__ . "/../vendor/autoload.php";
-
+    $autoload = __DIR__ . "/../vendor/autoload.php";
     if (!file_exists($autoload)) {
-        exit("Autoload not found!");
+        $autoload = __DIR__ . "/../../../autoload.php";
     }
 
     require_once $autoload;
 
     if (!is_callable($callable)) {
+        file_put_contents("iscallable_log_fail.txt", $callable);
         exit("Method is not callable!");
     }
     

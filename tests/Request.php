@@ -4,6 +4,6 @@ namespace Auguzsto\Job\Tests;
     class Request {
 
         public static function slow(): void {
-            sleep(5);
+            sleep(15);
         }
     }
