@@ -30,7 +30,6 @@ use Auguzsto\Job\JobException;
                 $args = escapeshellarg(json_encode($args));;
                 
                 $cmd = "php $runner $classmethod $args > /dev/null 2>&1 & echo $!";
-                print($cmd);
                 exec($cmd, $output);
 
                 if (!empty($output)) {
