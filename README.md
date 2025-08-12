@@ -19,10 +19,10 @@ Run this static method in the background with the job.
 <?php
 require_once __DIR__ . "/../vendor/autoload.php";
 
-use Auguzsto\Phpworker\Worker;
+use Auguzsto\Job\Job;
 
-    $worker = new Worker();
-    $result = $worker->execute("Auguzsto\Phpworker\Tests\Request::slow");
+    $job = new Job();
+    $job->execute("Auguzsto\Phpworker\Tests\Request::slow");
     print($worker->pid);
 ```
 When executing the job, the PID of the background process is created and stored in the object.
