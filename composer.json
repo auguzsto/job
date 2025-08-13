@@ -1,7 +1,7 @@
 {
     "name": "auguzsto/job",
     "type": "library",
-    "description": "A simple and elegant tool for running processes in the background.",
+    "description": "A simple and elegant tool for running background processes without the need for external libraries. Linux only.",
     "license": "MIT",
     "require": {
         "php": ">=8.2",

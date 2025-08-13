@@ -51,8 +51,9 @@ use stdClass;
             $pids = scandir($this->dirPid);
             foreach ($pids as $key => $pid) {
                 if (is_dir($pid)) continue;
-
+                
                 $running = file_get_contents("{$this->dirPid}/$pid");
+                if (empty($running)) continue;
                 
                 $process = new stdClass();
                 $process->pid = $pid;
