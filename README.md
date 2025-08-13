@@ -1,6 +1,11 @@
 # About
 The job executes the static method of a class from a given namespace.
 
+# Install
+```sh
+composer require auguzsto/job:dev-main
+```
+
 # Simple example
 Simulating a very time-consuming request.
 ```php
