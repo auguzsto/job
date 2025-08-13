@@ -2,6 +2,7 @@
 
 use Auguzsto\Job\Job;
 use Auguzsto\Job\JobException;
+use Auguzsto\Job\Tests\Consumer;
 use Auguzsto\Job\Tests\Request;
 use PHPUnit\Framework\TestCase;
 
@@ -38,5 +39,13 @@ use PHPUnit\Framework\TestCase;
             $job = new Job();
             $result = $job->execute(Request::class, "slowBy", [35]);
             $this->assertTrue($result);
+        }
+
+        public function testGetAllProcessInRunning(): void {
+            $job = new Job();
+            $result = $job->getAllProcessInRunning();
+            $this->assertIsArray($result);
+            $this->assertObjectHasProperty("pid", $result[0]);
+            $this->assertObjectHasProperty("running", $result[0]);
         }
     }

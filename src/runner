@@ -17,10 +17,13 @@
     }
 
     require_once $autoload;
+    $pid = getmypid();
+    $filePid = __DIR__ . "/.pids/$pid";
 
     if (!is_callable($callable)) {
-        file_put_contents("iscallable_log_fail.txt", $callable);
         exit("Method is not callable!");
     }
     
     call_user_func_array($callable, $args);
+    unlink($filePid);
+    exec("kill -9 $pid");

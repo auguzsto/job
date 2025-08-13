@@ -1,11 +1,14 @@
 <?php
 namespace Auguzsto\Job;
 use Auguzsto\Job\JobException;
+use stdClass;
 
     class Job {
 
         private string $runner;
         public int $pid;
+
+        private string $dirPid = __DIR__ . "/.pids";
 
         public function __construct() {
             $this->setRunner(__DIR__ . "/runner");
@@ -34,13 +37,45 @@ use Auguzsto\Job\JobException;
 
                 if (!empty($output)) {
                     $this->pid = (int) $output[0];
-                    return true;
+                    $this->createPidFile($cmd);
                 }
                 
-                return false;
+                return $this->isProcessRunning();
             } catch (JobException $th) {
                 throw $th;
             }
+        }
+
+        public function getAllProcessInRunning(): array {
+            $result = [];
+            $pids = scandir($this->dirPid);
+            foreach ($pids as $key => $pid) {
+                if (is_dir($pid)) continue;
+
+                $running = file_get_contents("{$this->dirPid}/$pid");
+                
+                $process = new stdClass();
+                $process->pid = $pid;
+                $process->running = $running;
+                array_push($result, $process);
+            }
+            return $result;
+        }
+
+        private function isProcessRunning(): bool {
+            if (file_exists($this->dirPid . "/{$this->pid}")) {
+                return true;
+            }
+
+            return false;
+        }
+
+        private function createPidFile(string $cmd): void {
+            if (!is_dir($this->dirPid)) {
+                mkdir($this->dirPid);
+            }
+
+            file_put_contents("{$this->dirPid}/{$this->pid}", $cmd);
         }
 
         private function checkRunnerExists(): bool {
@@ -59,8 +94,7 @@ use Auguzsto\Job\JobException;
             return false;
         }
 
-        private function checkClassExists(string $classmethod): bool {
-            $class = explode("::", $classmethod)[0];
+        private function checkClassExists(string $class): bool {
             if (class_exists($class)) {
                 return true;
             }
