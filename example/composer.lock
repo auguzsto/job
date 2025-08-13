@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/auguzsto/job.git",
-                "reference": "26c9f7ae49bcd22be937bed4c18c36f7727b3c9d"
+                "reference": "c82a054fe86bc8c131b7987f93f76b8040f0767a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/auguzsto/job/zipball/26c9f7ae49bcd22be937bed4c18c36f7727b3c9d",
-                "reference": "26c9f7ae49bcd22be937bed4c18c36f7727b3c9d",
+                "url": "https://api.github.com/repos/auguzsto/job/zipball/c82a054fe86bc8c131b7987f93f76b8040f0767a",
+                "reference": "c82a054fe86bc8c131b7987f93f76b8040f0767a",
                 "shasum": ""
             },
             "require": {
@@ -45,12 +45,12 @@
                     "email": "auguzsto@gmail.com"
                 }
             ],
-            "description": "A simple and elegant tool for running processes in the background.",
+            "description": "A simple and elegant tool for running background processes without the need for external libraries. Linux only.",
             "support": {
                 "issues": "https://github.com/auguzsto/job/issues",
                 "source": "https://github.com/auguzsto/job/tree/main"
             },
-            "time": "2025-08-13T17:45:14+00:00"
+            "time": "2025-08-13T23:29:09+00:00"
         }
     ],
     "packages-dev": [],

@@ -33,7 +33,6 @@ use Auguzsto\Job\Tests\Request;
 
     $job = new Job();
     $job->execute(Request::class, "slow");
-    print($job->pid);
 ```
 
 With args.
@@ -46,6 +45,6 @@ use Auguzsto\Job\Tests\Request;
 
     $job = new Job();
     $job->execute(Request::class, "slowBy", [35]);
-    print($job->pid);
+    echo $job->process->getPid();
 ```
-When executing the job, the PID of the background process is created and stored in the object.
+When executing the job, the PID of the background process is created and stored in the object process.
