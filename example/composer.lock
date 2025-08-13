@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/auguzsto/job.git",
-                "reference": "aaca93297f09bf593f53acd2b6cf0b0df15a4dca"
+                "reference": "28fd13c048edcfca1abe4a4f91fdd923b9755575"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/auguzsto/job/zipball/aaca93297f09bf593f53acd2b6cf0b0df15a4dca",
-                "reference": "aaca93297f09bf593f53acd2b6cf0b0df15a4dca",
+                "url": "https://api.github.com/repos/auguzsto/job/zipball/28fd13c048edcfca1abe4a4f91fdd923b9755575",
+                "reference": "28fd13c048edcfca1abe4a4f91fdd923b9755575",
                 "shasum": ""
             },
             "require": {
@@ -36,6 +36,9 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
             "authors": [
                 {
                     "name": "Matheus Augusto",
@@ -47,7 +50,7 @@
                 "issues": "https://github.com/auguzsto/job/issues",
                 "source": "https://github.com/auguzsto/job/tree/main"
             },
-            "time": "2025-08-12T18:42:46+00:00"
+            "time": "2025-08-13T13:55:18+00:00"
         }
     ],
     "packages-dev": [],
