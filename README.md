@@ -12,6 +12,10 @@ namespace Auguzsto\Job\Tests;
         public static function slow(): void {
             sleep(60);
         }
+
+        public static function slowBy(int $seconds): void {
+            sleep($seconds);
+        }
     }
 ```
 Run this static method in the background with the job.
@@ -20,9 +24,23 @@ Run this static method in the background with the job.
 require_once __DIR__ . "/../vendor/autoload.php";
 
 use Auguzsto\Job\Job;
+use Auguzsto\Job\Tests\Request;
 
     $job = new Job();
-    $job->execute("Auguzsto\Job\Tests\Request::slow");
-    print($worker->pid);
+    $job->execute(Request::class, "slow");
+    print($job->pid);
+```
+
+With args.
+```php
+<?php
+require_once __DIR__ . "/../vendor/autoload.php";
+
+use Auguzsto\Job\Job;
+use Auguzsto\Job\Tests\Request;
+
+    $job = new Job();
+    $job->execute(Request::class, "slowBy", [35]);
+    print($job->pid);
 ```
 When executing the job, the PID of the background process is created and stored in the object.

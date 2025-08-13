@@ -11,22 +11,22 @@ use Auguzsto\Job\JobException;
             $this->setRunner(__DIR__ . "/runner");
         }
 
-        public function execute(string $classmethod, array $args = []): bool {
+        public function execute(string $class, string $method, array $args = []): bool {
             try {
                 if (!$this->checkRunnerExists()) {
                     throw new JobException("Runner not found");
                 }
 
-                if (!$this->checkClassExists($classmethod)) {
+                if (!$this->checkClassExists($class)) {
                     throw new JobException("Class not found");
                 }
 
-                if (!$this->checkStaticMethodExists($classmethod)) {
+                if (!$this->checkStaticMethodExists("$class::$method")) {
                     throw new JobException("Static method not found");
                 }
 
                 $runner = $this->getRunner();
-                $classmethod = escapeshellarg($classmethod);
+                $classmethod = escapeshellarg("$class::$method");
                 $args = escapeshellarg(json_encode($args));;
                 
                 $cmd = "php $runner $classmethod $args > /dev/null 2>&1 & echo $!";
