@@ -1,113 +1,62 @@
 <?php
 namespace Auguzsto\Job;
+use Auguzsto\Job\Exceptions\ClassNotExistsException;
+use Auguzsto\Job\Exceptions\MethodNotExistsException;
 use Auguzsto\Job\JobException;
-use stdClass;
+use Auguzsto\Job\RunnerInterface;
+use Auguzsto\Job\ProcessInterface;
 
-    class Job {
+class Job
+{
+    public RunnerInterface $runner;
+    public ProcessInterface $process;
 
-        private string $runner;
-        public int $pid;
+    public function __construct()
+    {
+        $this->runner = new Runner();
+        $this->process = new Process();
+    }
 
-        private string $dirPid = __DIR__ . "/.pids";
-
-        public function __construct() {
-            $this->setRunner(__DIR__ . "/runner");
-        }
-
-        public function execute(string $class, string $method, array $args = []): bool {
-            try {
-                if (!$this->checkRunnerExists()) {
-                    throw new JobException("Runner not found");
-                }
-
-                if (!$this->checkClassExists($class)) {
-                    throw new JobException("Class not found");
-                }
-
-                if (!$this->checkMethodExists($class, $method)) {
-                    throw new JobException("Method not found");
-                }
-
-                $runner = $this->getRunner();
-                $classmethod = escapeshellarg("$class::$method");
-                $args = escapeshellarg(json_encode($args));;
-                
-                $cmd = "php $runner $classmethod $args > /dev/null 2>&1 & echo $!";
-                exec($cmd, $output);
-
-                if (!empty($output)) {
-                    $this->pid = (int) $output[0];
-                    $this->createPidFile($cmd);
-                }
-                
-                return $this->isProcessRunning();
-            } catch (JobException $th) {
-                throw $th;
-            }
-        }
-
-        public function getAllProcessInRunning(): array {
-            $result = [];
-            $pids = scandir($this->dirPid);
-            foreach ($pids as $key => $pid) {
-                if (is_dir($pid)) continue;
-                
-                $running = file_get_contents("{$this->dirPid}/$pid");
-                if (empty($running)) continue;
-                
-                $process = new stdClass();
-                $process->pid = $pid;
-                $process->running = $running;
-                array_push($result, $process);
-            }
-            return $result;
-        }
-
-        private function isProcessRunning(): bool {
-            if (file_exists($this->dirPid . "/{$this->pid}")) {
-                return true;
+    public function execute(string $class, string $method, array $args = []): void
+    {
+        try {
+            if (!$this->checkClassExists($class)) {
+                throw new ClassNotExistsException("Class not found");
             }
 
-            return false;
-        }
-
-        private function createPidFile(string $cmd): void {
-            if (!is_dir($this->dirPid)) {
-                mkdir($this->dirPid);
+            if (!$this->checkMethodExists($class, $method)) {
+                throw new MethodNotExistsException("Method not found");
             }
 
-            file_put_contents("{$this->dirPid}/{$this->pid}", $cmd);
-        }
+            $runner = $this->runner->bin();
+            $classmethod = escapeshellarg("$class::$method");
+            $args = escapeshellarg(json_encode($args));
 
-        private function checkRunnerExists(): bool {
-            if (file_exists($this->getRunner())) {
-                return true;
-            }
+            $cmd = "php $runner $classmethod $args > /dev/null 2>&1 & echo $!";
+            exec($cmd, $output);
 
-            return false;
-        }
-
-        private function checkMethodExists(string $class, string $method): bool {
-            if (method_exists($class, $method)) {
-                return true;
-            }
-
-            return false;
-        }
-
-        private function checkClassExists(string $class): bool {
-            if (class_exists($class)) {
-                return true;
-            }
-
-            return false;
-        }
-
-        public function setRunner(string $runner): void {
-            $this->runner = $runner;
-        }
-
-        public function getRunner(): string {
-            return $this->runner;
+            $pid = $output[0];
+            $this->process->createFile($pid, $cmd);
+        } catch (JobException $th) {
+            throw $th;
         }
     }
+
+    private function checkMethodExists(string $class, string $method): bool
+    {
+        if (method_exists($class, $method)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private function checkClassExists(string $class): bool
+    {
+        if (class_exists($class)) {
+            return true;
+        }
+
+        return false;
+    }
+}
