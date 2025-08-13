@@ -19,9 +19,9 @@ use PHPUnit\Framework\TestCase;
             $this->assertIsInt($job->pid);
         }
 
-        public function testAbortIfStaticMethodNotExists(): void {
+        public function testAbortIfMethodNotExists(): void {
             $this->expectException(JobException::class);
-            $this->expectExceptionMessage("Static method not found");
+            $this->expectExceptionMessage("Method not found");
             $job = new Job();
             $job->execute(Request::class, "methodNotExists");
         }

@@ -21,8 +21,8 @@ use Auguzsto\Job\JobException;
                     throw new JobException("Class not found");
                 }
 
-                if (!$this->checkStaticMethodExists("$class::$method")) {
-                    throw new JobException("Static method not found");
+                if (!$this->checkMethodExists($class, $method)) {
+                    throw new JobException("Method not found");
                 }
 
                 $runner = $this->getRunner();
@@ -51,10 +51,7 @@ use Auguzsto\Job\JobException;
             return false;
         }
 
-        private function checkStaticMethodExists(string $classmethod): bool {
-            $class = explode("::", $classmethod)[0];
-            $method = explode("::", $classmethod)[1];
-
+        private function checkMethodExists(string $class, string $method): bool {
             if (method_exists($class, $method)) {
                 return true;
             }
