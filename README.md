@@ -31,8 +31,8 @@ require_once __DIR__ . "/../vendor/autoload.php";
 use Auguzsto\Job\Job;
 use Auguzsto\Job\Tests\Request;
 
-    $job = new Job();
-    $job->execute(Request::class, "slow");
+    $job = new Job(Request::class, "slow");
+    $job->execute();
 ```
 
 With args.
@@ -43,8 +43,8 @@ require_once __DIR__ . "/../vendor/autoload.php";
 use Auguzsto\Job\Job;
 use Auguzsto\Job\Tests\Request;
 
-    $job = new Job();
-    $job->execute(Request::class, "slowBy", [35]);
+    $job = new Job(Request::class, "slowBy", [35]);
+    $job->execute();
     echo $job->process->getPid();
 ```
 When executing the job, the PID of the background process is created and stored in the object process.
