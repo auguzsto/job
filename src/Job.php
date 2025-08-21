@@ -8,29 +8,35 @@ use Auguzsto\Job\ProcessInterface;
 
 class Job
 {
+    private string $class;
+    private string $method;
+    private array $args;
     public RunnerInterface $runner;
     public ProcessInterface $process;
 
-    public function __construct()
+    public function __construct(string $class = "", string $method = "", array $args = [])
     {
         $this->runner = new Runner();
         $this->process = new Process();
+        $this->class = $class;
+        $this->method = $method;
+        $this->args = $args;
     }
 
-    public function execute(string $class, string $method, array $args = []): void
+    public function execute(): void
     {
         try {
-            if (!$this->checkClassExists($class)) {
+            if (!$this->checkClassExists($this->class)) {
                 throw new ClassNotExistsException("Class not found");
             }
 
-            if (!$this->checkMethodExists($class, $method)) {
+            if (!$this->checkMethodExists($this->class, $this->method)) {
                 throw new MethodNotExistsException("Method not found");
             }
 
             $runner = $this->runner->bin();
-            $classmethod = escapeshellarg("$class::$method");
-            $args = escapeshellarg(json_encode($args));
+            $classmethod = escapeshellarg("{$this->class}::{$this->method}");
+            $args = escapeshellarg(json_encode($this->args));
 
             $cmd = "php $runner $classmethod $args > /dev/null 2>&1 & echo $!";
             exec($cmd, $output);
