@@ -6,10 +6,10 @@ use Auguzsto\Job\Job;
 
     require_once __DIR__ . "/../vendor/autoload.php";
     
-    $job = new Job();
-
     /// Simulating a backup in background.
-    $job->execute(Backup::class, "large");
+    $job = new Job(Backup::class, "large");
+    $job->execute();
 
     /// Simulating a queue consumer.
-    $job->execute(Consume::class, "listen");
+    $job = new Job(Consume::class, "listen");
+    $job->execute();

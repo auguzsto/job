@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/auguzsto/job.git",
-                "reference": "c82a054fe86bc8c131b7987f93f76b8040f0767a"
+                "reference": "d5300890bb0d12bc89d82c87109d856103e4163e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/auguzsto/job/zipball/c82a054fe86bc8c131b7987f93f76b8040f0767a",
-                "reference": "c82a054fe86bc8c131b7987f93f76b8040f0767a",
+                "url": "https://api.github.com/repos/auguzsto/job/zipball/d5300890bb0d12bc89d82c87109d856103e4163e",
+                "reference": "d5300890bb0d12bc89d82c87109d856103e4163e",
                 "shasum": ""
             },
             "require": {
@@ -50,7 +50,7 @@
                 "issues": "https://github.com/auguzsto/job/issues",
                 "source": "https://github.com/auguzsto/job/tree/main"
             },
-            "time": "2025-08-13T23:29:09+00:00"
+            "time": "2025-08-21T14:37:35+00:00"
         }
     ],
     "packages-dev": [],
