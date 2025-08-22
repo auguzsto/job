@@ -12,13 +12,16 @@ Simulating a very time-consuming request.
 <?php
 namespace Auguzsto\Job\Tests;
 
-    class Request {
+    class Request 
+    {
 
-        public static function slow(): void {
+        public static function slow(): void 
+        {
             sleep(60);
         }
 
-        public static function slowBy(int $seconds): void {
+        public static function slowBy(int $seconds): void 
+        {
             sleep($seconds);
         }
     }
@@ -44,7 +47,24 @@ use Auguzsto\Job\Job;
 use Auguzsto\Job\Tests\Request;
 
     $job = new Job(Request::class, "slowBy", [35]);
-    $job->execute();
-    echo $job->process->getPid();
+    $pid = $job->execute();
+    echo $pid;
 ```
-When executing the job, the PID of the background process is created and stored in the object process.
+Execute a group jobs.
+```php
+<?php
+require_once __DIR__ . "/../vendor/autoload.php";
+
+use Auguzsto\Job\GroupJob;
+use Auguzsto\Job\Job;
+use Auguzsto\Job\Tests\Request;
+
+    $jobs = new GroupJob([
+        new Job(Request::class, "slow"),
+        new Job(Request::class, "slowBy", [25]),
+        new Job(Request::class, "slow"),
+    ]);
+    $pids = $jobs->execute();
+    print_r($pids);
+```
+When executing the job, the PID of the background process is created and returned.
