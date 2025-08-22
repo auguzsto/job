@@ -7,7 +7,7 @@
         "php": ">=8.2",
         "composer-runtime-api": "^2.2.2"
     },
-    "version": "0.0.2",
+    "version": "0.0.1",
     "autoload": {
         "psr-4": {
             "Auguzsto\\Job\\": "src/",
