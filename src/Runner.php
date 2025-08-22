@@ -8,15 +8,18 @@ class Runner implements RunnerInterface
 {
     private string $bin;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->setBin(__DIR__ . "/bin");
     }
 
-    public function bin(): string {
+    public function bin(): string
+    {
         return $this->bin;
     }
 
-    public function setBin(string $path): void {
+    public function setBin(string $path): void
+    {
         if (!file_exists($path)) {
             throw new RunnerNotExistsException("File runner not found in {$this->bin()}");
         }

@@ -22,10 +22,12 @@ class Job implements JobInterface
         $this->args = $args;
     }
 
-    public function process(): ProcessInterface {
+    public function process(): ProcessInterface
+    {
         return new Process();
     }
-    public function runner(): RunnerInterface {
+    public function runner(): RunnerInterface
+    {
         return new Runner();
     }
 
