@@ -13,6 +13,6 @@
         }
     ],
     "require": {
-        "auguzsto/job": "0.0.1"
+        "auguzsto/job": "0.0.2"
     }
 }

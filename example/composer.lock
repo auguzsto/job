@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "951f50ffebaf8b62b0fc563fc65da436",
+    "content-hash": "2e02682dd5a701541e1e3054c7fadba0",
     "packages": [
         {
             "name": "auguzsto/job",
-            "version": "0.0.1",
+            "version": "0.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/auguzsto/job.git",
-                "reference": "4798f235572566fa4274287f4102a03e5e6a3dc2"
+                "reference": "1f24b9312eead8a1fcf024790a1386fbb4c24255"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/auguzsto/job/zipball/4798f235572566fa4274287f4102a03e5e6a3dc2",
-                "reference": "4798f235572566fa4274287f4102a03e5e6a3dc2",
+                "url": "https://api.github.com/repos/auguzsto/job/zipball/1f24b9312eead8a1fcf024790a1386fbb4c24255",
+                "reference": "1f24b9312eead8a1fcf024790a1386fbb4c24255",
                 "shasum": ""
             },
             "require": {
@@ -47,9 +47,9 @@
             "description": "A simple and elegant tool for running background processes without the need for external libraries. Linux only.",
             "support": {
                 "issues": "https://github.com/auguzsto/job/issues",
-                "source": "https://github.com/auguzsto/job/tree/0.0.1"
+                "source": "https://github.com/auguzsto/job/tree/0.0.2"
             },
-            "time": "2025-08-22T13:08:07+00:00"
+            "time": "2025-08-22T19:52:33+00:00"
         }
     ],
     "packages-dev": [],
