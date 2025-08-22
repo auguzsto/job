@@ -13,6 +13,6 @@
         }
     ],
     "require": {
-        "auguzsto/job": "dev-main"
+        "auguzsto/job": "0.0.1"
     }
 }

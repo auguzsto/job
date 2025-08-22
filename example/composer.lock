@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "93c50586eb292614ccbed6f44151abe5",
+    "content-hash": "951f50ffebaf8b62b0fc563fc65da436",
     "packages": [
         {
             "name": "auguzsto/job",
-            "version": "dev-main",
+            "version": "0.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/auguzsto/job.git",
-                "reference": "d5300890bb0d12bc89d82c87109d856103e4163e"
+                "reference": "4798f235572566fa4274287f4102a03e5e6a3dc2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/auguzsto/job/zipball/d5300890bb0d12bc89d82c87109d856103e4163e",
-                "reference": "d5300890bb0d12bc89d82c87109d856103e4163e",
+                "url": "https://api.github.com/repos/auguzsto/job/zipball/4798f235572566fa4274287f4102a03e5e6a3dc2",
+                "reference": "4798f235572566fa4274287f4102a03e5e6a3dc2",
                 "shasum": ""
             },
             "require": {
@@ -27,7 +27,6 @@
             "require-dev": {
                 "phpunit/phpunit": "^12"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -48,17 +47,15 @@
             "description": "A simple and elegant tool for running background processes without the need for external libraries. Linux only.",
             "support": {
                 "issues": "https://github.com/auguzsto/job/issues",
-                "source": "https://github.com/auguzsto/job/tree/main"
+                "source": "https://github.com/auguzsto/job/tree/0.0.1"
             },
-            "time": "2025-08-21T14:37:35+00:00"
+            "time": "2025-08-22T13:08:07+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "auguzsto/job": 20
-    },
+    "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {},
