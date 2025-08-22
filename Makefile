@@ -1,5 +1,5 @@
 up:
-	@docker compose up -d
+	@docker compose up --build -d
 
 enter:
 	@docker exec -it phpjob-dev sh
