@@ -14,6 +14,9 @@
             "Auguzsto\\Job\\Tests\\": "tests/"
         }
     },
+    "scripts": {
+        "tests": "./vendor/bin/phpunit tests"
+    },
     "authors": [
         {
             "name": "Matheus Augusto",

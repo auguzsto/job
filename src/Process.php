@@ -6,7 +6,7 @@ use Auguzsto\Job\ProcessInterface;
 
 class Process implements ProcessInterface
 {
-    public int $pid;
+    private int $pid;
     private string $dir = self::DIR;
 
     public function setPid(int $pid): void
