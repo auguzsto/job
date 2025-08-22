@@ -9,7 +9,7 @@ class Runner implements RunnerInterface
     private string $bin;
 
     public function __construct() {
-        $this->setBin(__DIR__ . "/runner");
+        $this->setBin(__DIR__ . "/bin");
     }
 
     public function bin(): string {
