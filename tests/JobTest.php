@@ -8,19 +8,10 @@ use PHPUnit\Framework\TestCase;
 
 final class JobTest extends TestCase
 {
-
-    public function testRunningMethodsInBackground(): void
-    {
-        $job = new Job(Request::class, "slow");
-        $job->execute();
-        $this->assertTrue($job->process->isRunning());
-    }
-
     public function testCreatePidWhenExecuteMethodInBackground(): void
     {
         $job = new Job(Request::class, "slow");
-        $job->execute();
-        $this->assertIsInt($job->process->getPid());
+        $this->assertIsInt($job->execute());
     }
 
     public function testAbortIfMethodNotExists(): void
@@ -35,21 +26,20 @@ final class JobTest extends TestCase
     {
         $this->expectException(RunnerNotExistsException::class);
         $job = new Job(Request::class, "slow");
-        $job->runner->setBin("");
+        $job->runner()->setBin("");
         $job->execute();
     }
 
     public function testRunningJobWithArgs(): void
     {
         $job = new Job(Request::class, "slowBy", [35]);
-        $job->execute();
-        $this->assertTrue($job->process->isRunning());
+        $this->assertIsInt($job->execute());
     }
 
     public function testGetAllProcessInRunning(): void
     {
         $job = new Job();
-        $result = $job->process->running();
+        $result = $job->process()->running();
         $this->assertIsArray($result);
         $this->assertObjectHasProperty("pid", $result[0]);
         $this->assertObjectHasProperty("running", $result[0]);

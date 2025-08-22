@@ -1,29 +1,35 @@
 <?php
 namespace Auguzsto\Job;
-use Auguzsto\Job\Exceptions\ClassNotExistsException;
-use Auguzsto\Job\Exceptions\MethodNotExistsException;
+use Auguzsto\Job\Runner;
+use Auguzsto\Job\Process;
 use Auguzsto\Job\JobException;
+use Auguzsto\Job\JobInterface;
 use Auguzsto\Job\RunnerInterface;
 use Auguzsto\Job\ProcessInterface;
+use Auguzsto\Job\Exceptions\ClassNotExistsException;
+use Auguzsto\Job\Exceptions\MethodNotExistsException;
 
-class Job
+class Job implements JobInterface
 {
     private string $class;
     private string $method;
     private array $args;
-    public RunnerInterface $runner;
-    public ProcessInterface $process;
 
     public function __construct(string $class = "", string $method = "", array $args = [])
     {
-        $this->runner = new Runner();
-        $this->process = new Process();
         $this->class = $class;
         $this->method = $method;
         $this->args = $args;
     }
 
-    public function execute(): void
+    public function process(): ProcessInterface {
+        return new Process();
+    }
+    public function runner(): RunnerInterface {
+        return new Runner();
+    }
+
+    public function execute(): int
     {
         try {
             if (!$this->checkClassExists($this->class)) {
@@ -34,7 +40,7 @@ class Job
                 throw new MethodNotExistsException("Method not found");
             }
 
-            $bin = $this->runner->bin();
+            $bin = $this->runner()->bin();
             $classmethod = escapeshellarg("{$this->class}::{$this->method}");
             $args = escapeshellarg(json_encode($this->args));
 
@@ -42,7 +48,8 @@ class Job
             exec($cmd, $output);
 
             $pid = $output[0];
-            $this->process->createFile($pid, $cmd);
+            $this->process()->createFile($pid, $cmd);
+            return $pid;
         } catch (JobException $th) {
             throw $th;
         }
