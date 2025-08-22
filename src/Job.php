@@ -34,11 +34,11 @@ class Job
                 throw new MethodNotExistsException("Method not found");
             }
 
-            $runner = $this->runner->bin();
+            $bin = $this->runner->bin();
             $classmethod = escapeshellarg("{$this->class}::{$this->method}");
             $args = escapeshellarg(json_encode($this->args));
 
-            $cmd = "php $runner $classmethod $args > /dev/null 2>&1 & echo $!";
+            $cmd = "php $bin $classmethod $args > /dev/null 2>&1 & echo $!";
             exec($cmd, $output);
 
             $pid = $output[0];
