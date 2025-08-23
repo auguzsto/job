@@ -3,7 +3,7 @@ The job executes the static method of a class from a given namespace.
 
 # Install
 ```sh
-composer require auguzsto/job:0.0.1
+composer require auguzsto/job
 ```
 
 # Simple example
