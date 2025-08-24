@@ -68,3 +68,11 @@ use Auguzsto\Job\Tests\Request;
     print_r($pids);
 ```
 When executing the job, the PID of the background process is created and returned.
+
+# See logs erros
+You can read logs error in /tmp/php-jobs-error.log
+
+Example
+```
+cat /tmp/php-jobs-error.log
+```
