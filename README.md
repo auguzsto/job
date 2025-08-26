@@ -82,14 +82,22 @@ cat /tmp/php-worker-error.log
 ```
 
 # Workers
+### Up
 Default 10 workers.
 ```sh
 php vendor/bin/worker up
 ```
-Or choose your quantity (but be careful, all workers are hung on PIDs).
+Or choose your quantity (but be careful, all workers are hung on PIDs). See the image below.
+
 ```sh
 php vendor/bin/worker up 20
 ```
+
+<div style="text-align:center">
+<img src="https://github.com/auguzsto/job/blob/1.0.0/images/workers.png?raw=true">
+</div>
+
+### Down
 You can also down workers. Remember that for the Job class to work correctly, it needs to have active workers.
 ```
 php vendor/bin/worker down
