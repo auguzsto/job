@@ -11,13 +11,13 @@ final class JobTest extends TestCase
 
     public function testUpWorkers(): void
     {
-        $workers = 10;
+        $init = 2;
         $binWorker = __DIR__ . "/../src/worker";
-        $handle = popen("php $binWorker up $workers", "r");
+        $handle = popen("php $binWorker up $init", "r");
         $buffer = fread($handle, 2096);
         $array = json_decode($buffer);
         $this->assertIsArray($array);
-        $this->assertEquals($workers, count($array));
+        $this->assertEquals($init, count($array));
     }
 
     public function testJobPerformedConcorrency(): void

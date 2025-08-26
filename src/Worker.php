@@ -28,7 +28,7 @@ class Worker
         }
     }
 
-    public static function up(int $amount = 2, RunnerInterface $runner = new Runner()): void
+    public static function up(int $amount = 10, RunnerInterface $runner = new Runner()): void
     {
         $dirqueue = self::DIR;
         if (!is_dir($dirqueue)) {
@@ -43,8 +43,10 @@ class Worker
 
         for ($i = 1; $i <= $amount; $i++) {
             $fileQueue = "$dirqueue/$i";
-            if (file_exists($fileQueue))
+            if (file_exists($fileQueue)) {
+                array_push($ups, "Worker up: $i");
                 continue;
+            }
 
             $args = escapeshellarg($i);
             $cmd = "php $bin $classmethod [$args] > /dev/null 2>&1 & echo $!";
