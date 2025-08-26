@@ -1,6 +1,10 @@
 # About
 The job executes the static method of a class from a given namespace.
 
+# Requirements
+- PHP >= 8.3
+- Linux
+
 # Install
 ```sh
 composer require auguzsto/job
