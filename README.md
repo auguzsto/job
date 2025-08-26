@@ -73,12 +73,12 @@ When executing the job, the PID of the background process is created and returne
 
 # See logs erros
 You can read logs error in 
-- /tmp/php-jobs-error.log 
+- /tmp/php-bin-error.log 
 - /tmp/php-worker-error.log
 
 Example
 ```
-cat /tmp/php-jobs-error.log
+cat /tmp/php-worker-error.log
 ```
 
 # Workers
