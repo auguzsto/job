@@ -15,7 +15,15 @@ if (!file_exists($autoload)) {
 require_once $autoload;
 
 if ($argv[1] == "up") {
-    Worker::up();
+    $amount = $argv[2];
+
+    if (empty($amount)) {
+        Worker::up();
+    }
+
+    if (!empty($amount)) {
+        Worker::up($amount);
+    }
 }
 
 if ($argv[1] == "down") {
