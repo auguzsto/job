@@ -1,5 +1,6 @@
 <?php
 namespace Auguzsto\Job;
+use Auguzsto\Job\Exceptions\NoActiveWorkersException;
 use Auguzsto\Job\JobException;
 use Auguzsto\Job\Exceptions\ClassNotExistsException;
 use Auguzsto\Job\Exceptions\MethodNotExistsException;
@@ -20,6 +21,10 @@ class Job implements JobInterface
     public function execute(): int
     {
         try {
+            if (!$this->checkWorkersEnables()) {
+                throw new NoActiveWorkersException("No active workers. Try restarting.");
+            }
+
             if (!$this->checkClassExists($this->class)) {
                 throw new ClassNotExistsException("Class not found");
             }
@@ -43,12 +48,23 @@ class Job implements JobInterface
                 file_put_contents($fileQueue, json_encode($queue));
                 return $randomId;
             }
-            
+
             sleep(1);
             return $this->execute();
         } catch (JobException $th) {
             throw $th;
         }
+    }
+
+    private function checkWorkersEnables(): bool
+    {
+        $dir = __DIR__ . "/.queue";
+        $queues = array_diff(scandir($dir), [".", ".."]);
+        if (count($queues) > 0) {
+            return true;
+        }
+        
+        return false;
     }
 
     private function checkMethodExists(string $class, string $method): bool

@@ -28,7 +28,7 @@ class Worker
         }
     }
 
-    public static function up(int $amount = 10, RunnerInterface $runner = new Runner()): void
+    public static function up(int $amount = 10, RunnerInterface $runner = new Runner()): array
     {
         $dirqueue = self::DIR;
         if (!is_dir($dirqueue)) {
@@ -63,10 +63,10 @@ class Worker
             array_push($ups, "Worker up: $i");
         }
 
-        fwrite(STDOUT, json_encode($ups) . PHP_EOL);
+        return $ups;
     }
 
-    public static function down(): void
+    public static function down(): array
     {
         $dirqueue = self::DIR;
         $workers = array_diff(scandir($dirqueue), [".", ".."]);
@@ -79,6 +79,6 @@ class Worker
             array_push($downs, "Worker down: $worker");
         }
 
-        fwrite(STDOUT, json_encode($downs) . PHP_EOL);
+        return $downs;
     }
 }

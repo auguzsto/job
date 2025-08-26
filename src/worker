@@ -18,14 +18,17 @@ if ($argv[1] == "up") {
     $amount = $argv[2];
 
     if (empty($amount)) {
-        Worker::up();
+        $ups = Worker::up();
+        print json_encode($ups) . PHP_EOL;
     }
 
     if (!empty($amount)) {
-        Worker::up($amount);
+        $ups = Worker::up($amount);
+        print json_encode($ups) . PHP_EOL;
     }
 }
 
 if ($argv[1] == "down") {
-    Worker::down();
+    $downs = Worker::down();
+    print json_encode($downs) . PHP_EOL;
 }
