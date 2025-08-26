@@ -69,6 +69,10 @@ class Worker
     public static function down(): array
     {
         $dirqueue = self::DIR;
+        if (!is_dir($dirqueue)) {
+            mkdir($dirqueue);
+        }
+        
         $workers = array_diff(scandir($dirqueue), [".", ".."]);
         $downs = [];
         foreach ($workers as $key => $worker) {
