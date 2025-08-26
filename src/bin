@@ -21,13 +21,9 @@ if (!file_exists($autoload)) {
 }
 
 require_once $autoload;
-$pid = getmypid();
-$filePid = __DIR__ . "/.pids/$pid";
 
 if (!is_callable($callable)) {
     exit("Method is not callable!");
 }
 
 call_user_func_array($callable, $args);
-unlink($filePid);
-exec("kill -9 $pid");
