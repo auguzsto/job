@@ -47,8 +47,8 @@ use Auguzsto\Job\Job;
 use Auguzsto\Job\Tests\Request;
 
     $job = new Job(Request::class, "slowBy", [35]);
-    $pid = $job->execute();
-    echo $pid;
+    $queue = $job->execute();
+    echo $queue;
 ```
 Execute a group jobs.
 ```php
@@ -64,8 +64,8 @@ use Auguzsto\Job\Tests\Request;
         new Job(Request::class, "slowBy", [25]),
         new Job(Request::class, "slow"),
     ]);
-    $pids = $jobs->execute();
-    print_r($pids);
+    $queues = $jobs->execute();
+    print_r($queues);
 ```
 When executing the job, the PID of the background process is created and returned.
 

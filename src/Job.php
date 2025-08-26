@@ -1,11 +1,6 @@
 <?php
 namespace Auguzsto\Job;
-use Auguzsto\Job\Runner;
-use Auguzsto\Job\Process;
 use Auguzsto\Job\JobException;
-use Auguzsto\Job\JobInterface;
-use Auguzsto\Job\RunnerInterface;
-use Auguzsto\Job\ProcessInterface;
 use Auguzsto\Job\Exceptions\ClassNotExistsException;
 use Auguzsto\Job\Exceptions\MethodNotExistsException;
 
@@ -22,15 +17,6 @@ class Job implements JobInterface
         $this->args = $args;
     }
 
-    public function process(): ProcessInterface
-    {
-        return new Process();
-    }
-    public function runner(): RunnerInterface
-    {
-        return new Runner();
-    }
-
     public function execute(): int
     {
         try {
@@ -42,16 +28,24 @@ class Job implements JobInterface
                 throw new MethodNotExistsException("Method not found");
             }
 
-            $bin = $this->runner()->bin();
-            $classmethod = escapeshellarg("{$this->class}::{$this->method}");
-            $args = escapeshellarg(json_encode($this->args));
+            $args = json_encode($this->args);
+            $classmethod = "{$this->class}::{$this->method}::$args";
+            $dirqueue = __DIR__ . "/.queue";
 
-            $cmd = "php $bin $classmethod $args > /dev/null 2>&1 & echo $!";
-            exec($cmd, $output);
-
-            $pid = $output[0];
-            $this->process()->createFile($pid, $cmd);
-            return $pid;
+            $queues = array_diff(scandir($dirqueue), [".", ".."]);
+            $randomId = random_int(1, count($queues));
+            $fileQueue = "$dirqueue/$randomId";
+            $content = file_get_contents($fileQueue);
+            $queue = json_decode($content);
+            
+            if (empty($queue->callable)) {
+                $queue->callable = $classmethod;
+                file_put_contents($fileQueue, json_encode($queue));
+                return $randomId;
+            }
+            
+            sleep(1);
+            return $this->execute();
         } catch (JobException $th) {
             throw $th;
         }

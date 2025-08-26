@@ -1,47 +1,34 @@
 <?php
 
-use Auguzsto\Job\Exceptions\MethodNotExistsException;
-use Auguzsto\Job\Exceptions\RunnerNotExistsException;
+use Auguzsto\Job\GroupJob;
 use Auguzsto\Job\Job;
+use Auguzsto\Job\Tests\Backup;
 use Auguzsto\Job\Tests\Request;
 use PHPUnit\Framework\TestCase;
 
 final class JobTest extends TestCase
 {
-    public function testCreatePidWhenExecuteMethodInBackground(): void
+
+    public function testUpWorkers(): void
     {
-        $job = new Job(Request::class, "slow");
-        $this->assertIsInt($job->execute());
+        $workers = 10;
+        $binWorker = __DIR__ . "/../src/worker";
+        $handle = popen("php $binWorker up $workers", "r");
+        $buffer = fread($handle, 2096);
+        $array = json_decode($buffer);
+        $this->assertIsArray($array);
+        $this->assertEquals($workers, count($array));
     }
 
-    public function testAbortIfMethodNotExists(): void
+    public function testJobPerformedConcorrency(): void
     {
-        $this->expectException(MethodNotExistsException::class);
-        $this->expectExceptionMessage("Method not found");
-        $job = new Job(Request::class, "methodNotExists");
-        $job->execute();
-    }
-
-    public function testAbortIfRunnerNotExists(): void
-    {
-        $this->expectException(RunnerNotExistsException::class);
-        $job = new Job(Request::class, "slow");
-        $job->runner()->setBin("");
-        $job->execute();
-    }
-
-    public function testRunningJobWithArgs(): void
-    {
-        $job = new Job(Request::class, "slowBy", [35]);
-        $this->assertIsInt($job->execute());
-    }
-
-    public function testGetAllProcessInRunning(): void
-    {
-        $job = new Job();
-        $result = $job->process()->running();
-        $this->assertIsArray($result);
-        $this->assertObjectHasProperty("pid", $result[0]);
-        $this->assertObjectHasProperty("running", $result[0]);
+        $jobs = new GroupJob([
+            new Job(Backup::class, "larger", [15]),
+            new Job(Backup::class, "larger", [30]),
+            new Job(Backup::class, "larger", [45]),
+        ]);
+        $queues = $jobs->execute();
+        $this->assertIsArray($queues);
+        $this->assertEquals(3, count($queues));
     }
 }

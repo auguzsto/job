@@ -1,9 +1,6 @@
 <?php
 namespace Auguzsto\Job;
 
-use Auguzsto\Job\Runner;
-use Auguzsto\Job\Process;
-
 class GroupJob implements JobInterface
 {
 
@@ -14,23 +11,13 @@ class GroupJob implements JobInterface
         $this->jobs = $job;
     }
 
-    public function runner(): RunnerInterface
-    {
-        return new Runner();
-    }
-
-    public function process(): ProcessInterface
-    {
-        return new Process();
-    }
-
     public function execute(): array
     {
-        $pids = [];
+        $queues = [];
         foreach ($this->jobs as $key => $job) {
-            $pid = $job->execute();
-            array_push($pids, $pid);
+            $queue = $job->execute();
+            array_push($queues, $queue);
         }
-        return $pids;
+        return $queues;
     }
 }
