@@ -94,3 +94,8 @@ You can also down workers. Remember that for the Job class to work correctly, it
 ```
 php vendor/bin/worker down
 ```
+
+### Working
+<div style="text-align:center">
+<img src="https://github.com/auguzsto/job/blob/1.0.0/images/image.png?raw=true">
+</div>
