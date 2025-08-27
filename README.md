@@ -7,7 +7,7 @@ The job executes the method of a class from a given namespace.
 
 # Install
 ```sh
-composer require auguzsto/job
+composer require auguzsto/job:1.0.0
 ```
 ```
 php vendor/bin/worker up
