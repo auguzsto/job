@@ -5,7 +5,7 @@ use Auguzsto\Job\RunnerInterface;
 
 class Worker
 {
-    private const DIR = __DIR__ . "/.queue";
+    public const DIR = __DIR__ . "/.queue";
 
     public static function listen(string $id): never
     {

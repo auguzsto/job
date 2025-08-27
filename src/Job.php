@@ -35,7 +35,7 @@ class Job implements JobInterface
 
             $args = json_encode($this->args);
             $classmethod = "{$this->class}::{$this->method}::$args";
-            $dirqueue = __DIR__ . "/.queue";
+            $dirqueue = Worker::DIR;
 
             $queues = array_diff(scandir($dirqueue), [".", ".."]);
             $randomId = random_int(1, count($queues));
@@ -58,7 +58,7 @@ class Job implements JobInterface
 
     private function checkWorkersEnables(): bool
     {
-        $dir = __DIR__ . "/.queue";
+        $dir = Worker::DIR;
         $queues = array_diff(scandir($dir), [".", ".."]);
         if (count($queues) > 0) {
             return true;
