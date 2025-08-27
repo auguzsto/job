@@ -73,7 +73,7 @@ use Auguzsto\Job\Tests\Request;
     $queues = $jobs->execute();
     print_r($queues);
 ```
-When executing the job, the PID of the background process is created and returned.
+When executing the job, the queue id is returned.
 
 # See logs erros
 You can read logs error in 
