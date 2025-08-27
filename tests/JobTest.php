@@ -1,6 +1,7 @@
 <?php
 
 use Auguzsto\Job\Job;
+use Auguzsto\Job\Tests\Time;
 use Auguzsto\Job\Worker;
 use Auguzsto\Job\GroupJob;
 use Auguzsto\Job\Tests\Backup;
@@ -54,6 +55,13 @@ final class JobTest extends TestCase
     {
         $job = new Job(Request::class, "slowBy", [35]);
         $this->assertIsInt($job->execute());
+    }
+
+    public function testJobRunningMethodInstance(): void
+    {
+        $job = new Job(Backup::class, "big", [1]);
+        $queue = $job->execute();
+        $this->assertIsInt($queue);
     }
     
 }

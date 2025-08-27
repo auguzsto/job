@@ -8,4 +8,10 @@ class Backup
         sleep($time);
         file_put_contents("backup_large_$time.txt", date("H:i:s"));
     }
+
+    public function big(int $time): void
+    {
+        sleep($time);
+        file_put_contents("backup_big_$time.txt", date("H:i:s"));
+    }
 }

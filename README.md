@@ -1,5 +1,5 @@
 # About
-The job executes the static method of a class from a given namespace.
+The job executes the method of a class from a given namespace.
 
 # Requirements
 - PHP >= 8.3

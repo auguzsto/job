@@ -2,5 +2,4 @@ vendor
 .phpunit.result.cache
 .pids
 .queue
-example.backup.txt
-backup_large_*.txt
+*.txt

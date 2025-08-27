@@ -1,7 +1,11 @@
 <?php
 namespace Auguzsto\Job;
 
+use ReflectionClass;
+use ReflectionMethod;
+use Auguzsto\Job\Runner;
 use Auguzsto\Job\RunnerInterface;
+use ReflectionObject;
 
 class Worker
 {
@@ -21,7 +25,33 @@ class Worker
             [$class, $method, $args] = explode("::", $queue->callable);
             $classmethod = "$class::$method";
             $args = json_decode($args);
-            call_user_func_array($classmethod, $args);
+            $methodReflection = new ReflectionMethod($class, $method);
+
+            if ($methodReflection->isStatic()) {
+                $instance = new $class();
+                //call_user_func_array($classmethod, $args);
+                if (empty($args)) {
+                    $methodReflection->invoke(null);
+                }
+
+                if (!empty($args)) {
+                    $methodReflection->invokeArgs(null, $args);
+                }
+            }
+
+            if (!$methodReflection->isStatic()) {
+                // $instance = new $class();
+                // call_user_func_array([$instance, $method], $args);
+                $instance = new $class();
+                if (empty($args)) {
+                    $methodReflection->invoke($instance);
+                }
+
+                if (!empty($args)) {
+                    $methodReflection->invokeArgs($instance, $args);
+                }
+            }
+            
             $queue->callable = "";
             file_put_contents($fileQueue, json_encode($queue));
             sleep(1);

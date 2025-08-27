@@ -1,13 +1,13 @@
 {
     "name": "auguzsto/job",
     "type": "library",
-    "description": "A simple and elegant tool for running background processes without the need for external libraries. Linux only.",
+    "description": "A simple and elegant tool for running background processes without the need for external libraries.",
     "license": "MIT",
     "require": {
         "php": ">=8.2",
         "composer-runtime-api": "^2.2.2"
     },
-    "version": "0.0.3",
+    "version": "1.0.0",
     "autoload": {
         "psr-4": {
             "Auguzsto\\Job\\": "src/",
