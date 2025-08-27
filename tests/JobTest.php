@@ -59,7 +59,7 @@ final class JobTest extends TestCase
 
     public function testJobRunningMethodInstance(): void
     {
-        $job = new Job(Backup::class, "big", [1]);
+        $job = new Job(Backup::class, "big", [new Time(2)]);
         $queue = $job->execute();
         $this->assertIsInt($queue);
     }

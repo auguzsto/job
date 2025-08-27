@@ -32,20 +32,17 @@ class Job implements JobInterface
             if (!$this->checkMethodExists($this->class, $this->method)) {
                 throw new MethodNotExistsException("Method not found");
             }
-
-            $args = json_encode($this->args);
-            $classmethod = "{$this->class}::{$this->method}::$args";
             $dirqueue = Worker::DIR;
 
             $queues = array_diff(scandir($dirqueue), [".", ".."]);
             $randomId = random_int(1, count($queues));
             $fileQueue = "$dirqueue/$randomId";
             $content = file_get_contents($fileQueue);
-            $queue = json_decode($content);
+            $queue = unserialize($content);
             
-            if (empty($queue->callable)) {
-                $queue->callable = $classmethod;
-                file_put_contents($fileQueue, json_encode($queue));
+            if (empty($queue["callable"])) {
+                $queue["callable"] = [$this->class, $this->method, $this->args];
+                file_put_contents($fileQueue, serialize($queue));
                 return $randomId;
             }
 

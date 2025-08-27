@@ -15,16 +15,19 @@ class Worker
     {
         $fileQueue = self::DIR . "/$id";
         while (true) {
-            $content = file_get_contents($fileQueue);
-            $queue = json_decode($content);
-            if (empty($queue->callable)) {
+            if (!file_exists($fileQueue)) {
                 sleep(1);
                 continue;
             }
 
-            [$class, $method, $args] = explode("::", $queue->callable);
-            $classmethod = "$class::$method";
-            $args = json_decode($args);
+            $content = file_get_contents($fileQueue);
+            $queue = unserialize($content);
+            if (empty($queue["callable"])) {
+                sleep(1);
+                continue;
+            }
+
+            [$class, $method, $args] = $queue["callable"];
             $methodReflection = new ReflectionMethod($class, $method);
 
             if ($methodReflection->isStatic()) {
@@ -52,8 +55,8 @@ class Worker
                 }
             }
             
-            $queue->callable = "";
-            file_put_contents($fileQueue, json_encode($queue));
+            $queue["callable"] = "";
+            file_put_contents($fileQueue, serialize($queue));
             sleep(1);
         }
     }
@@ -89,7 +92,7 @@ class Worker
                 "pid" => trim($pid),
                 "callable" => "",
             ];
-            file_put_contents($fileQueue, json_encode($content));
+            file_put_contents($fileQueue, serialize($content));
             array_push($ups, "Worker up: $i");
         }
 
@@ -106,8 +109,9 @@ class Worker
         $workers = array_diff(scandir($dirqueue), [".", ".."]);
         $downs = [];
         foreach ($workers as $key => $worker) {
-            $content = json_decode(file_get_contents("$dirqueue/$worker"));
-            $handle = popen("kill -9 {$content->pid}", "r");
+            $content = unserialize(file_get_contents("$dirqueue/$worker"));
+            $pid = $content["pid"];
+            $handle = popen("kill -9 $pid", "r");
             pclose($handle);
             unlink("$dirqueue/$worker");
             array_push($downs, "Worker down: $worker");
