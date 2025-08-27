@@ -64,10 +64,13 @@ require_once __DIR__ . "/../vendor/autoload.php";
 use Auguzsto\Job\GroupJob;
 use Auguzsto\Job\Job;
 use Auguzsto\Job\Tests\Request;
+use Auguzsto\Job\Tests\Backup;
+use Auguzsto\Job\Tests\Time;
 
     $jobs = new GroupJob([
         new Job(Request::class, "slow"),
         new Job(Request::class, "slowBy", [25]),
+        new Job(Backup::class, "big", [new Time(1)]),
         new Job(Request::class, "slow"),
     ]);
     $queues = $jobs->execute();
