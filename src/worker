@@ -1,0 +1,34 @@
+<?php
+
+use Auguzsto\Job\Worker;
+
+ini_set('log_errors', 1);
+ini_set('display_errors', 0);
+ini_set('error_log', '/tmp/php-worker-error.log');
+error_reporting(E_ALL);
+
+$autoload = __DIR__ . "/../vendor/autoload.php";
+if (!file_exists($autoload)) {
+    $autoload = __DIR__ . "/../../../autoload.php";
+}
+
+require_once $autoload;
+
+if ($argv[1] == "up") {
+    $amount = $argv[2];
+
+    if (empty($amount)) {
+        $ups = Worker::up();
+        print json_encode($ups) . PHP_EOL;
+    }
+
+    if (!empty($amount)) {
+        $ups = Worker::up($amount);
+        print json_encode($ups) . PHP_EOL;
+    }
+}
+
+if ($argv[1] == "down") {
+    $downs = Worker::down();
+    print json_encode($downs) . PHP_EOL;
+}

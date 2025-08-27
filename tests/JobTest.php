@@ -1,17 +1,46 @@
 <?php
 
-use Auguzsto\Job\Exceptions\MethodNotExistsException;
-use Auguzsto\Job\Exceptions\RunnerNotExistsException;
 use Auguzsto\Job\Job;
+use Auguzsto\Job\Tests\Time;
+use Auguzsto\Job\Worker;
+use Auguzsto\Job\GroupJob;
+use Auguzsto\Job\Tests\Backup;
 use Auguzsto\Job\Tests\Request;
 use PHPUnit\Framework\TestCase;
+use Auguzsto\Job\Exceptions\MethodNotExistsException;
+use Auguzsto\Job\Exceptions\NoActiveWorkersException;
 
 final class JobTest extends TestCase
 {
-    public function testCreatePidWhenExecuteMethodInBackground(): void
+    public function testThrowExceptionWithoutActiveWorkers(): void
     {
-        $job = new Job(Request::class, "slow");
-        $this->assertIsInt($job->execute());
+        $this->expectException(NoActiveWorkersException::class);
+        Worker::down();
+        $job = new Job(Backup::class, "larger", [1]);
+        $job->execute();
+    }
+
+    public function testUpWorkers(): void
+    {
+        $result = Worker::up();
+        $this->assertIsArray($result);
+        $this->assertEquals(10, count($result));
+    }
+
+    public function testJobPerformedConcorrency(): void
+    {
+        $jobs = new GroupJob([
+            new Job(Backup::class, "larger", [1]),
+            new Job(Backup::class, "larger", [5]),
+            new Job(Backup::class, "larger", [8]),
+        ]);
+        $queues = $jobs->execute();
+        $this->assertIsArray($queues);
+        $this->assertEquals(3, count($queues));
+        sleep(3);
+        $result = file_exists("backup_large_1.txt");
+        $this->assertTrue($result);
+
     }
 
     public function testAbortIfMethodNotExists(): void
@@ -22,26 +51,17 @@ final class JobTest extends TestCase
         $job->execute();
     }
 
-    public function testAbortIfRunnerNotExists(): void
-    {
-        $this->expectException(RunnerNotExistsException::class);
-        $job = new Job(Request::class, "slow");
-        $job->runner()->setBin("");
-        $job->execute();
-    }
-
     public function testRunningJobWithArgs(): void
     {
         $job = new Job(Request::class, "slowBy", [35]);
         $this->assertIsInt($job->execute());
     }
 
-    public function testGetAllProcessInRunning(): void
+    public function testJobRunningMethodInstance(): void
     {
-        $job = new Job();
-        $result = $job->process()->running();
-        $this->assertIsArray($result);
-        $this->assertObjectHasProperty("pid", $result[0]);
-        $this->assertObjectHasProperty("running", $result[0]);
+        $job = new Job(Backup::class, "big", [new Time(2)]);
+        $queue = $job->execute();
+        $this->assertIsInt($queue);
     }
+    
 }

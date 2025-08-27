@@ -1,7 +1,7 @@
 <?php
 ini_set('log_errors', 1);
 ini_set('display_errors', 0);
-ini_set('error_log', '/tmp/php-jobs-error.log');
+ini_set('error_log', '/tmp/php-bin-error.log');
 error_reporting(E_ALL);
 
 if ($argc > 3) {
@@ -21,13 +21,9 @@ if (!file_exists($autoload)) {
 }
 
 require_once $autoload;
-$pid = getmypid();
-$filePid = __DIR__ . "/.pids/$pid";
 
 if (!is_callable($callable)) {
     exit("Method is not callable!");
 }
 
 call_user_func_array($callable, $args);
-unlink($filePid);
-exec("kill -9 $pid");
