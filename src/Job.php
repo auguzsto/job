@@ -32,17 +32,17 @@ class Job implements JobInterface
             if (!$this->checkMethodExists($this->class, $this->method)) {
                 throw new MethodNotExistsException("Method not found");
             }
-            $dirqueue = Worker::DIR;
+            $dirworkers = Worker::DIR;
 
-            $queues = array_diff(scandir($dirqueue), [".", ".."]);
-            $randomId = random_int(1, count($queues));
-            $fileQueue = "$dirqueue/$randomId";
-            $content = file_get_contents($fileQueue);
-            $queue = unserialize($content);
+            $workers = array_diff(scandir($dirworkers), [".", ".."]);
+            $randomId = random_int(1, count($workers));
+            $fileWorker = "$dirworkers/$randomId";
+            $content = file_get_contents($fileWorker);
+            $worker = unserialize($content);
             
-            if (empty($queue["callable"])) {
-                $queue["callable"] = [$this->class, $this->method, $this->args];
-                file_put_contents($fileQueue, serialize($queue));
+            if (empty($worker["callable"])) {
+                $worker["callable"] = [$this->class, $this->method, $this->args];
+                file_put_contents($fileWorker, serialize($worker));
                 return $randomId;
             }
 
@@ -56,8 +56,8 @@ class Job implements JobInterface
     private function checkWorkersEnables(): bool
     {
         $dir = Worker::DIR;
-        $queues = array_diff(scandir($dir), [".", ".."]);
-        if (count($queues) > 0) {
+        $workers = array_diff(scandir($dir), [".", ".."]);
+        if (count($workers) > 0) {
             return true;
         }
         

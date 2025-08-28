@@ -1,5 +1,6 @@
 vendor
 .phpunit.result.cache
 .pids
-.queue
+.workers
 *.txt
+example

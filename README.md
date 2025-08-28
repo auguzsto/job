@@ -1,5 +1,5 @@
 # About
-The job executes the method of a class from a given namespace.
+A job executes a method in the background. If there are too many jobs for too few workers, there will be competition. When a worker is free, the job will dispatch the task to that free worker.
 
 # Requirements
 - PHP >= 8.3
@@ -10,7 +10,7 @@ The job executes the method of a class from a given namespace.
 composer require auguzsto/job:1.0.0
 ```
 ```
-php vendor/bin/worker up
+vendor/bin/worker up
 ```
 # Simple example
 Simulating a very time-consuming request.
@@ -32,7 +32,7 @@ namespace Auguzsto\Job\Tests;
         }
     }
 ```
-Run this static method in the background with the job.
+Run this method in the background with the job.
 ```php
 <?php
 require_once __DIR__ . "/../vendor/autoload.php";
@@ -53,8 +53,8 @@ use Auguzsto\Job\Job;
 use Auguzsto\Job\Tests\Request;
 
     $job = new Job(Request::class, "slowBy", [35]);
-    $queue = $job->execute();
-    echo $queue;
+    $worker = $job->execute();
+    echo $worker;
 ```
 Execute a group jobs.
 ```php
@@ -73,10 +73,10 @@ use Auguzsto\Job\Tests\Time;
         new Job(Backup::class, "big", [new Time(1)]),
         new Job(Request::class, "slow"),
     ]);
-    $queues = $jobs->execute();
-    print_r($queues);
+    $workers = $jobs->execute();
+    print_r($workers);
 ```
-When executing the job, the queue id is returned.
+When the job sends a task to the worker, the id of this worker is returned.
 
 # See logs erros
 You can read logs error in 
@@ -92,12 +92,12 @@ cat /tmp/php-worker-error.log
 ### Up
 Default 10 workers.
 ```sh
-php vendor/bin/worker up
+vendor/bin/worker up
 ```
 Or choose your quantity (but be careful, all workers are hung on PIDs). See the image below.
 
 ```sh
-php vendor/bin/worker up 20
+vendor/bin/worker up 20
 ```
 
 <div style="text-align:center">
@@ -107,10 +107,10 @@ php vendor/bin/worker up 20
 ### Down
 You can also down workers. Remember that for the Job class to work correctly, it needs to have active workers.
 ```
-php vendor/bin/worker down
+vendor/bin/worker down
 ```
 
 ### Working
 <div style="text-align:center">
-<img src="https://github.com/auguzsto/job/blob/1.0.0/images/image.png?raw=true">
+<img src="https://github.com/auguzsto/job/blob/1.0.0/images/design.png?raw=true">
 </div>

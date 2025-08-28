@@ -34,9 +34,9 @@ final class JobTest extends TestCase
             new Job(Backup::class, "larger", [5]),
             new Job(Backup::class, "larger", [8]),
         ]);
-        $queues = $jobs->execute();
-        $this->assertIsArray($queues);
-        $this->assertEquals(3, count($queues));
+        $workers = $jobs->execute();
+        $this->assertIsArray($workers);
+        $this->assertEquals(3, count($workers));
         sleep(3);
         $result = file_exists("backup_large_1.txt");
         $this->assertTrue($result);
@@ -60,8 +60,8 @@ final class JobTest extends TestCase
     public function testJobRunningMethodInstance(): void
     {
         $job = new Job(Backup::class, "big", [new Time(2)]);
-        $queue = $job->execute();
-        $this->assertIsInt($queue);
+        $worker = $job->execute();
+        $this->assertIsInt($worker);
     }
     
 }
