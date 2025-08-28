@@ -7,7 +7,7 @@ A job executes a method in the background. If there are too many jobs for too fe
 
 # Install
 ```sh
-composer require auguzsto/job:1.0.0
+composer require auguzsto/job
 ```
 ```
 vendor/bin/worker up
