@@ -3,4 +3,3 @@ vendor
 .pids
 .workers
 *.txt
-example

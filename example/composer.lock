@@ -1,0 +1,67 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "ff540cfb650cd878c505129d61a8c6e2",
+    "packages": [
+        {
+            "name": "auguzsto/job",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/auguzsto/job.git",
+                "reference": "3ea6149821276287f6e91a4d00f366c648046f53"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/auguzsto/job/zipball/3ea6149821276287f6e91a4d00f366c648046f53",
+                "reference": "3ea6149821276287f6e91a4d00f366c648046f53",
+                "shasum": ""
+            },
+            "require": {
+                "composer-runtime-api": "^2.2.2",
+                "php": ">=8.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^12"
+            },
+            "bin": [
+                "src/worker"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Auguzsto\\Job\\": "src/",
+                    "Auguzsto\\Job\\Tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matheus Augusto",
+                    "email": "auguzsto@gmail.com"
+                }
+            ],
+            "description": "A simple and elegant tool for running background processes without the need for external libraries.",
+            "support": {
+                "issues": "https://github.com/auguzsto/job/issues",
+                "source": "https://github.com/auguzsto/job/tree/1.0.2"
+            },
+            "time": "2025-08-28T19:17:25+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {},
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {},
+    "platform-dev": {},
+    "plugin-api-version": "2.6.0"
+}

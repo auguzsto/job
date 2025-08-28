@@ -1,0 +1,12 @@
+{
+    "name": "auguzsto/example",
+    "description": "Just example jobs",
+    "autoload": {
+        "psr-4": {
+            "Auguzsto\\Example\\": "src/"
+        }
+    },
+    "require": {
+        "auguzsto/job": "^1.0.2"
+    }
+}
