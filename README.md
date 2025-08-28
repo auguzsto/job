@@ -112,5 +112,5 @@ vendor/bin/worker down
 
 ### Working
 <div style="text-align:center">
-<img src="https://github.com/auguzsto/job/blob/1.0.0/images/design.png?raw=true">
+<img src="https://github.com/auguzsto/job/blob/main/images/design.png?raw=true">
 </div>
