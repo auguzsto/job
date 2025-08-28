@@ -13,11 +13,11 @@ class GroupJob implements JobInterface
 
     public function execute(): array
     {
-        $queues = [];
+        $workers = [];
         foreach ($this->jobs as $key => $job) {
-            $queue = $job->execute();
-            array_push($queues, $queue);
+            $worker = $job->execute();
+            array_push($workers, $worker);
         }
-        return $queues;
+        return $workers;
     }
 }

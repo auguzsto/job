@@ -5,29 +5,28 @@ use ReflectionClass;
 use ReflectionMethod;
 use Auguzsto\Job\Runner;
 use Auguzsto\Job\RunnerInterface;
-use ReflectionObject;
 
 class Worker
 {
-    public const DIR = __DIR__ . "/.queue";
+    public const DIR = __DIR__ . "/.workers";
 
     public static function listen(string $id): never
     {
-        $fileQueue = self::DIR . "/$id";
+        $fileWorker = self::DIR . "/$id";
         while (true) {
-            if (!file_exists($fileQueue)) {
+            if (!file_exists($fileWorker)) {
                 sleep(1);
                 continue;
             }
 
-            $content = file_get_contents($fileQueue);
-            $queue = unserialize($content);
-            if (empty($queue["callable"])) {
+            $content = file_get_contents($fileWorker);
+            $worker = unserialize($content);
+            if (empty($worker["callable"])) {
                 sleep(1);
                 continue;
             }
 
-            [$class, $method, $args] = $queue["callable"];
+            [$class, $method, $args] = $worker["callable"];
             $methodReflection = new ReflectionMethod($class, $method);
 
             if ($methodReflection->isStatic()) {
@@ -55,17 +54,17 @@ class Worker
                 }
             }
             
-            $queue["callable"] = "";
-            file_put_contents($fileQueue, serialize($queue));
+            $worker["callable"] = "";
+            file_put_contents($fileWorker, serialize($worker));
             sleep(1);
         }
     }
 
     public static function up(int $amount = 10, RunnerInterface $runner = new Runner()): array
     {
-        $dirqueue = self::DIR;
-        if (!is_dir($dirqueue)) {
-            mkdir($dirqueue);
+        $dirworker = self::DIR;
+        if (!is_dir($dirworker)) {
+            mkdir($dirworker);
         }
 
         $bin = $runner->bin();
@@ -75,8 +74,8 @@ class Worker
         $ups = [];
 
         for ($i = 1; $i <= $amount; $i++) {
-            $fileQueue = "$dirqueue/$i";
-            if (file_exists($fileQueue)) {
+            $fileWorker = "$dirworker/$i";
+            if (file_exists($fileWorker)) {
                 array_push($ups, "Worker up: $i");
                 continue;
             }
@@ -92,7 +91,7 @@ class Worker
                 "pid" => trim($pid),
                 "callable" => "",
             ];
-            file_put_contents($fileQueue, serialize($content));
+            file_put_contents($fileWorker, serialize($content));
             array_push($ups, "Worker up: $i");
         }
 
@@ -101,19 +100,19 @@ class Worker
 
     public static function down(): array
     {
-        $dirqueue = self::DIR;
-        if (!is_dir($dirqueue)) {
-            mkdir($dirqueue);
+        $dirworker = self::DIR;
+        if (!is_dir($dirworker)) {
+            mkdir($dirworker);
         }
         
-        $workers = array_diff(scandir($dirqueue), [".", ".."]);
+        $workers = array_diff(scandir($dirworker), [".", ".."]);
         $downs = [];
         foreach ($workers as $key => $worker) {
-            $content = unserialize(file_get_contents("$dirqueue/$worker"));
+            $content = unserialize(file_get_contents("$dirworker/$worker"));
             $pid = $content["pid"];
             $handle = popen("kill -9 $pid", "r");
             pclose($handle);
-            unlink("$dirqueue/$worker");
+            unlink("$dirworker/$worker");
             array_push($downs, "Worker down: $worker");
         }
 
