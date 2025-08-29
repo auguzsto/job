@@ -53,13 +53,19 @@ class Worker
                     $methodReflection->invokeArgs($instance, $args);
                 }
             }
-            
+
             $worker["callable"] = "";
             file_put_contents($fileWorker, serialize($worker));
             sleep(1);
         }
     }
 
+    /**
+     * Is a manualy worker up.
+     * @param int $amount
+     * @param \Auguzsto\Job\RunnerInterface $runner
+     * @return array
+     */
     public static function up(int $amount = 10, RunnerInterface $runner = new Runner()): array
     {
         $dirworker = self::DIR;
@@ -98,13 +104,61 @@ class Worker
         return $ups;
     }
 
+    /**
+     * Is a worker auto-up.
+     * @param int $i
+     * @param int $max
+     * @param \Auguzsto\Job\RunnerInterface $runner
+     * @return int
+     */
+    public static function register(int $i, int $max = 10, RunnerInterface $runner = new Runner()): int
+    {
+        $dirworker = self::DIR;
+        $fileWorker = "$dirworker/$i";
+
+        if ($i > $max) {
+            return random_int(0, $max);
+        }
+
+        if ($i > 0) {
+            $last = random_int(0, $i-1);
+            $fileWorkerLast = "$dirworker/$last";
+            if (file_exists($fileWorkerLast)) {
+                $content = file_get_contents($fileWorkerLast);
+                $workerLast = unserialize($content);
+                if (empty($workerLast["callable"])) {
+                    return $last;
+                }
+            }
+        }
+
+        $bin = $runner->bin();
+        $class = self::class;
+        $method = "listen";
+        $classmethod = escapeshellarg("$class::$method");
+
+        $args = escapeshellarg($i);
+        $cmd = "php $bin $classmethod [$args] > /dev/null 2>&1 & echo $!";
+        $handle = popen($cmd, "r");
+        $buffer = fread($handle, 2096);
+        $pid = $buffer;
+        pclose($handle);
+
+        $content = [
+            "pid" => trim($pid),
+            "callable" => "",
+        ];
+        file_put_contents($fileWorker, serialize($content));
+        return $i;
+    }
+
     public static function down(): array
     {
         $dirworker = self::DIR;
         if (!is_dir($dirworker)) {
             mkdir($dirworker);
         }
-        
+
         $workers = array_diff(scandir($dirworker), [".", ".."]);
         $downs = [];
         foreach ($workers as $key => $worker) {

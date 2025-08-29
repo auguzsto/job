@@ -24,9 +24,9 @@ class Job implements JobInterface
             $dirworkers = Worker::DIR;
             $workers = array_diff(scandir($dirworkers), [".", ".."]);
 
-            if (!$this->checkWorkersEnables($workers)) {
-                throw new NoActiveWorkersException("No active workers. Try restarting.");
-            }
+            // if (!$this->checkWorkersEnables($workers)) {
+            //     throw new NoActiveWorkersException("No active workers. Try restarting.");
+            // }
 
             if (!$this->checkClassExists($this->class)) {
                 throw new ClassNotExistsException("Class not found");
@@ -36,15 +36,15 @@ class Job implements JobInterface
                 throw new MethodNotExistsException("Method not found");
             }
 
-            $randomId = random_int(1, count($workers));
-            $fileWorker = "$dirworkers/$randomId";
+            $workerId = Worker::register(count($workers));
+            $fileWorker = "$dirworkers/$workerId";
             $content = file_get_contents($fileWorker);
             $worker = unserialize($content);
 
             if (empty($worker["callable"])) {
                 $worker["callable"] = [$this->class, $this->method, $this->args];
                 file_put_contents($fileWorker, serialize($worker));
-                return $randomId;
+                return $workerId;
             }
 
             sleep(1);

@@ -8,23 +8,35 @@ use Auguzsto\Job\Tests\Backup;
 use Auguzsto\Job\Tests\Request;
 use PHPUnit\Framework\TestCase;
 use Auguzsto\Job\Exceptions\MethodNotExistsException;
-use Auguzsto\Job\Exceptions\NoActiveWorkersException;
 
 final class JobTest extends TestCase
 {
-    public function testThrowExceptionWithoutActiveWorkers(): void
-    {
-        $this->expectException(NoActiveWorkersException::class);
-        Worker::down();
-        $job = new Job(Backup::class, "larger", [1]);
-        $job->execute();
-    }
 
     public function testUpWorkers(): void
     {
         $result = Worker::up();
         $this->assertIsArray($result);
         $this->assertEquals(10, count($result));
+        Worker::down();
+    }
+
+    public function testRegisterWorker(): void
+    {
+        $job = new Job(Request::class, "slowBy", [1]);
+        $worker = $job->execute();
+        $this->assertIsInt($worker);
+    }
+
+    public function testRegisterWorkerAtMaximumCapacity(): void
+    {   
+        $registered = 0;
+        while ($registered < 10) {
+            $job = new Job(Request::class, "slowBy", [1]);
+            $worker = $job->execute();
+            $registered = $worker;
+        }
+
+        $this->assertEquals(10, $registered);
     }
 
     public function testJobPerformedConcorrency(): void
@@ -53,7 +65,7 @@ final class JobTest extends TestCase
 
     public function testRunningJobWithArgs(): void
     {
-        $job = new Job(Request::class, "slowBy", [35]);
+        $job = new Job(Request::class, "slowBy", [5]);
         $this->assertIsInt($job->execute());
     }
 
