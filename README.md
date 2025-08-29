@@ -90,6 +90,8 @@ cat /tmp/php-worker-error.log
 ### Up
 A PID is created for each registered worker. The worker checks for tasks to be performed. In other words, worker = PID.
 
+By default, the worker limit is 10.
+
 <div style="text-align:center">
 <img src="https://github.com/auguzsto/job/blob/1.0.0/images/workers.png?raw=true">
 </div>
