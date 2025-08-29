@@ -9,9 +9,7 @@ A job executes a method in the background. If there are too many jobs for too fe
 ```sh
 composer require auguzsto/job
 ```
-```
-vendor/bin/worker up
-```
+
 # Simple example
 Simulating a very time-consuming request.
 ```php
@@ -90,15 +88,7 @@ cat /tmp/php-worker-error.log
 
 # Workers
 ### Up
-Default 10 workers.
-```sh
-vendor/bin/worker up
-```
-Or choose your quantity (but be careful, all workers are hung on PIDs). See the image below.
-
-```sh
-vendor/bin/worker up 20
-```
+A PID is created for each registered worker. The worker checks for tasks to be performed. In other words, worker = PID.
 
 <div style="text-align:center">
 <img src="https://github.com/auguzsto/job/blob/1.0.0/images/workers.png?raw=true">
