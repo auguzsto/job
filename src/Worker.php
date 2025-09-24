@@ -58,7 +58,6 @@ class Worker
     /**
      * Is a worker auto-up.
      * @param int $max
-     * @param \Auguzsto\Job\RunnerInterface $runner
      * @return int
      */
     public static function register(int $max = 10): int
