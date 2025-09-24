@@ -66,9 +66,17 @@ final class JobTest extends TestCase
         $worker = $job->execute();
         $this->assertIsInt($worker);
     }
-    public function testReturnArrayWithWorkersUps(): void
+    public function testReturnArrayWithActiveWorkers(): void
     {
         $result = Worker::workers();
+        $this->assertIsArray($result);
+        $total = count($result);
+        $this->assertEquals(11, $total);
+    }
+
+    public function testDownAllActiveWorkers(): void
+    {
+        $result = Worker::down();
         $this->assertIsArray($result);
         $total = count($result);
         $this->assertEquals(11, $total);
