@@ -4,7 +4,7 @@
     "description": "A simple and elegant tool for running background processes without the need for external libraries.",
     "license": "MIT",
     "require": {
-        "php": ">=8.2",
+        "php": ">=8.3",
         "composer-runtime-api": "^2.2.2"
     },
     "version": "1.0.4",
