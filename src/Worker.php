@@ -1,7 +1,6 @@
 <?php
 namespace Auguzsto\Job;
 
-use ReflectionClass;
 use ReflectionMethod;
 use Auguzsto\Job\Runner;
 use Auguzsto\Job\RunnerInterface;
@@ -78,7 +77,7 @@ class Worker
         }
 
         if ($i > 0) {
-            $last = random_int(0, $i-1);
+            $last = random_int(0, $i - 1);
             $fileWorkerLast = "$dirworker/$last";
             if (file_exists($fileWorkerLast)) {
                 $content = file_get_contents($fileWorkerLast);
@@ -109,7 +108,8 @@ class Worker
         return $i;
     }
 
-    public static function workers(): array {
+    public static function workers(): array
+    {
         $workers = array_diff(scandir(self::DIR), [".", ".."]);
         return $workers;
     }
