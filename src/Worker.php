@@ -31,7 +31,6 @@ class Worker
 
             if ($methodReflection->isStatic()) {
                 $instance = new $class();
-                //call_user_func_array($classmethod, $args);
                 if (empty($args)) {
                     $methodReflection->invoke(null);
                 }
@@ -42,8 +41,6 @@ class Worker
             }
 
             if (!$methodReflection->isStatic()) {
-                // $instance = new $class();
-                // call_user_func_array([$instance, $method], $args);
                 $instance = new $class();
                 if (empty($args)) {
                     $methodReflection->invoke($instance);
@@ -61,59 +58,19 @@ class Worker
     }
 
     /**
-     * Is a manualy worker up.
-     * @param int $amount
+     * Is a worker auto-up.
+     * @param int $max
      * @param \Auguzsto\Job\RunnerInterface $runner
-     * @return array
+     * @return int
      */
-    public static function up(int $amount = 10, RunnerInterface $runner = new Runner()): array
+    public static function register(int $max = 10, RunnerInterface $runner = new Runner()): int
     {
         $dirworker = self::DIR;
         if (!is_dir($dirworker)) {
             mkdir($dirworker);
         }
 
-        $bin = $runner->bin();
-        $class = self::class;
-        $method = "listen";
-        $classmethod = escapeshellarg("$class::$method");
-        $ups = [];
-
-        for ($i = 1; $i <= $amount; $i++) {
-            $fileWorker = "$dirworker/$i";
-            if (file_exists($fileWorker)) {
-                array_push($ups, "Worker up: $i");
-                continue;
-            }
-
-            $args = escapeshellarg($i);
-            $cmd = "php $bin $classmethod [$args] > /dev/null 2>&1 & echo $!";
-            $handle = popen($cmd, "r");
-            $buffer = fread($handle, 2096);
-            $pid = $buffer;
-            pclose($handle);
-
-            $content = [
-                "pid" => trim($pid),
-                "callable" => "",
-            ];
-            file_put_contents($fileWorker, serialize($content));
-            array_push($ups, "Worker up: $i");
-        }
-
-        return $ups;
-    }
-
-    /**
-     * Is a worker auto-up.
-     * @param int $i
-     * @param int $max
-     * @param \Auguzsto\Job\RunnerInterface $runner
-     * @return int
-     */
-    public static function register(int $i, int $max = 10, RunnerInterface $runner = new Runner()): int
-    {
-        $dirworker = self::DIR;
+        $i = count(self::workers());
         $fileWorker = "$dirworker/$i";
 
         if ($i > $max) {
@@ -150,6 +107,11 @@ class Worker
         ];
         file_put_contents($fileWorker, serialize($content));
         return $i;
+    }
+
+    public static function workers(): array {
+        $workers = array_diff(scandir(self::DIR), [".", ".."]);
+        return $workers;
     }
 
     public static function down(): array

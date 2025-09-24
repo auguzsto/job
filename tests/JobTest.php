@@ -11,15 +11,6 @@ use Auguzsto\Job\Exceptions\MethodNotExistsException;
 
 final class JobTest extends TestCase
 {
-
-    public function testUpWorkers(): void
-    {
-        $result = Worker::up();
-        $this->assertIsArray($result);
-        $this->assertEquals(10, count($result));
-        Worker::down();
-    }
-
     public function testRegisterWorker(): void
     {
         $job = new Job(Request::class, "slowBy", [1]);
