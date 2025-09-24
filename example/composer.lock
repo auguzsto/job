@@ -4,25 +4,25 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5759ff9dbd664f96352d1a61c893bba8",
+    "content-hash": "68b74399cc95e5b7eecf6798200d8180",
     "packages": [
         {
             "name": "auguzsto/job",
-            "version": "1.0.4",
+            "version": "1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/auguzsto/job.git",
-                "reference": "0020ba0ea70ccd34ccd7c20cff2a3089c247dc38"
+                "reference": "8f6746063af6e919977a5fd1bbbc21dd9a01497c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/auguzsto/job/zipball/0020ba0ea70ccd34ccd7c20cff2a3089c247dc38",
-                "reference": "0020ba0ea70ccd34ccd7c20cff2a3089c247dc38",
+                "url": "https://api.github.com/repos/auguzsto/job/zipball/8f6746063af6e919977a5fd1bbbc21dd9a01497c",
+                "reference": "8f6746063af6e919977a5fd1bbbc21dd9a01497c",
                 "shasum": ""
             },
             "require": {
                 "composer-runtime-api": "^2.2.2",
-                "php": ">=8.2"
+                "php": ">=8.3"
             },
             "require-dev": {
                 "phpunit/phpunit": "^12"
@@ -47,9 +47,9 @@
             "description": "A simple and elegant tool for running background processes without the need for external libraries.",
             "support": {
                 "issues": "https://github.com/auguzsto/job/issues",
-                "source": "https://github.com/auguzsto/job/tree/1.0.4"
+                "source": "https://github.com/auguzsto/job/tree/1.0.5"
             },
-            "time": "2025-09-24T15:19:36+00:00"
+            "time": "2025-09-24T19:50:53+00:00"
         }
     ],
     "packages-dev": [],
