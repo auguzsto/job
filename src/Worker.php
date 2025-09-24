@@ -8,6 +8,7 @@ use Auguzsto\Job\RunnerInterface;
 class Worker
 {
     public const DIR = __DIR__ . "/.workers";
+    private const BIN = __DIR__ . "/../bin/job";
 
     public static function listen(string $id): never
     {
@@ -62,7 +63,7 @@ class Worker
      * @param \Auguzsto\Job\RunnerInterface $runner
      * @return int
      */
-    public static function register(int $max = 10, RunnerInterface $runner = new Runner()): int
+    public static function register(int $max = 10): int
     {
         $dirworker = self::DIR;
         if (!is_dir($dirworker)) {
@@ -88,7 +89,7 @@ class Worker
             }
         }
 
-        $bin = $runner->bin();
+        $bin = self::BIN;
         $class = self::class;
         $method = "listen";
         $classmethod = escapeshellarg("$class::$method");

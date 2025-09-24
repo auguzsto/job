@@ -1,5 +1,6 @@
 <?php
 namespace Auguzsto\Job;
+use Auguzsto\Job\JobInterface;
 
 class GroupJob implements JobInterface
 {

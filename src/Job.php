@@ -1,6 +1,5 @@
 <?php
 namespace Auguzsto\Job;
-use Auguzsto\Job\Exceptions\NoActiveWorkersException;
 use Auguzsto\Job\JobException;
 use Auguzsto\Job\Exceptions\ClassNotExistsException;
 use Auguzsto\Job\Exceptions\MethodNotExistsException;
@@ -46,15 +45,6 @@ class Job implements JobInterface
         } catch (JobException $th) {
             throw $th;
         }
-    }
-
-    private function checkWorkersEnables(array $workers): bool
-    {
-        if (count($workers) > 0) {
-            return true;
-        }
-
-        return false;
     }
 
     private function checkMethodExists(string $class, string $method): bool

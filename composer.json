@@ -14,9 +14,6 @@
             "Auguzsto\\Job\\Tests\\": "tests/"
         }
     },
-    "bin": [
-        "src/worker"
-    ],
     "scripts": {
         "tests": "./vendor/bin/phpunit tests"
     },
