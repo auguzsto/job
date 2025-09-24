@@ -79,6 +79,7 @@ final class JobTest extends TestCase
 
     public function testRebuildWorkerThatFailedExecution(): void
     {
+        unlink("/tmp/php-job-error.log");
         $job = new Job(ClassWithError::class, "here", ["error"]);
         $worker = $job->execute();
         $dirworker = Worker::DIR;
@@ -86,6 +87,12 @@ final class JobTest extends TestCase
         
         $result = file_exists("$dirworker/$worker");
         $this->assertTrue($result, "Worker was rebuilt");
+    }
+
+    public function testBinGeneratesLogWhenExecutionFails(): void
+    {
+        $result = file_exists("/tmp/php-job-error.log");
+        $this->assertTrue($result);
     }
 
     public function testThrowWorkerIdExceedsMaximumLimit(): void
