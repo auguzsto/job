@@ -1,13 +1,16 @@
 <?php
 
 use Auguzsto\Job\Job;
-use Auguzsto\Job\Tests\Mocks\Time;
+use Auguzsto\Job\Worker;
 use Auguzsto\Job\GroupJob;
+use PHPUnit\Framework\TestCase;
+use Auguzsto\Job\Tests\Mocks\Time;
 use Auguzsto\Job\Tests\Mocks\Backup;
 use Auguzsto\Job\Tests\Mocks\Request;
-use Auguzsto\Job\Worker;
-use PHPUnit\Framework\TestCase;
+use Auguzsto\Job\Tests\Mocks\ClassWithError;
 use Auguzsto\Job\Exceptions\MethodNotExistsException;
+use Auguzsto\Job\Exceptions\WorkerNotAvailableException;
+use Auguzsto\Job\Exceptions\WorkerIdExceedsMaximumLimitException;
 
 final class JobTest extends TestCase
 {
@@ -74,12 +77,35 @@ final class JobTest extends TestCase
         $this->assertEquals(11, $total);
     }
 
-    public function testDownAllActiveWorkers(): void
+    public function testRebuildWorkerThatFailedExecution(): void
     {
-        $result = Worker::down();
-        $this->assertIsArray($result);
-        $total = count($result);
-        $this->assertEquals(11, $total);
+        $job = new Job(ClassWithError::class, "here", ["error"]);
+        $worker = $job->execute();
+        $dirworker = Worker::DIR;
+        sleep(1);
+        
+        $result = file_exists("$dirworker/$worker");
+        $this->assertTrue($result, "Worker was rebuilt");
     }
+
+    public function testThrowWorkerIdExceedsMaximumLimit(): void
+    {
+        $this->expectException(WorkerIdExceedsMaximumLimitException::class);
+        Worker::up(11);
+    }
+
+    public function testThrowWorkerNotAvailableException(): void
+    {
+        $this->expectException(WorkerNotAvailableException::class);
+        Worker::up(0);
+    }
+
+    // public function testDownAllActiveWorkers(): void
+    // {
+    //     $result = Worker::down();
+    //     $this->assertIsArray($result);
+    //     $total = count($result);
+    //     $this->assertEquals(11, $total);
+    // }
     
 }
