@@ -3,10 +3,6 @@ Install package
 ```
 composer require auguzsto/job
 ```
-Initialize workers
-```
-vendor/bin/worker up
-```
 # Examples
 ### Simple example background task
 ```
