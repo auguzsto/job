@@ -2,8 +2,6 @@
 namespace Auguzsto\Job;
 
 use ReflectionMethod;
-use Auguzsto\Job\Runner;
-use Auguzsto\Job\RunnerInterface;
 
 class Worker
 {
