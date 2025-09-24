@@ -2,10 +2,10 @@
 
 use Auguzsto\Job\Job;
 use Auguzsto\Job\Tests\Time;
-use Auguzsto\Job\Worker;
 use Auguzsto\Job\GroupJob;
 use Auguzsto\Job\Tests\Backup;
 use Auguzsto\Job\Tests\Request;
+use Auguzsto\Job\Worker;
 use PHPUnit\Framework\TestCase;
 use Auguzsto\Job\Exceptions\MethodNotExistsException;
 
@@ -65,6 +65,13 @@ final class JobTest extends TestCase
         $job = new Job(Backup::class, "big", [new Time(2)]);
         $worker = $job->execute();
         $this->assertIsInt($worker);
+    }
+    public function testReturnArrayWithWorkersUps(): void
+    {
+        $result = Worker::workers();
+        $this->assertIsArray($result);
+        $total = count($result);
+        $this->assertEquals(11, $total);
     }
     
 }
