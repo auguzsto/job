@@ -1,5 +1,6 @@
 <?php
-namespace Auguzsto\Job\Tests;
+namespace Auguzsto\Job\Tests\Mocks;
+use Auguzsto\Job\Tests\Mocks\TimeInterface;
 
 class Backup
 {

@@ -1,6 +1,6 @@
 <?php
-namespace Auguzsto\Job\Tests;
-use Auguzsto\Job\Tests\TimeInterface;
+namespace Auguzsto\Job\Tests\Mocks;
+use Auguzsto\Job\Tests\Mocks\TimeInterface;
 
 class Time implements TimeInterface
 {

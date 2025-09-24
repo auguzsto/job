@@ -1,5 +1,5 @@
 <?php
-namespace Auguzsto\Job\Tests;
+namespace Auguzsto\Job\Tests\Mocks;
 
 interface TimeInterface
 {

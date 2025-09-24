@@ -1,10 +1,10 @@
 <?php
 
 use Auguzsto\Job\Job;
-use Auguzsto\Job\Tests\Time;
+use Auguzsto\Job\Tests\Mocks\Time;
 use Auguzsto\Job\GroupJob;
-use Auguzsto\Job\Tests\Backup;
-use Auguzsto\Job\Tests\Request;
+use Auguzsto\Job\Tests\Mocks\Backup;
+use Auguzsto\Job\Tests\Mocks\Request;
 use Auguzsto\Job\Worker;
 use PHPUnit\Framework\TestCase;
 use Auguzsto\Job\Exceptions\MethodNotExistsException;
