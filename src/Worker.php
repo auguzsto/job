@@ -33,7 +33,6 @@ class Worker
                 $methodReflection = new ReflectionMethod($class, $method);
 
                 if ($methodReflection->isStatic()) {
-                    $instance = new $class();
                     if (empty($args)) {
                         $methodReflection->invoke(null);
                     }
