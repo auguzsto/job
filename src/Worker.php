@@ -83,13 +83,13 @@ class Worker
         }
 
         if ($i > 0) {
-            $last = random_int(0, $i - 1);
-            $fileWorkerLast = "$dirworker/$last";
-            if (file_exists($fileWorkerLast)) {
-                $content = file_get_contents($fileWorkerLast);
+            $randomWorker = random_int(0, $i - 1);
+            $fileWorker = "$dirworker/$randomWorker";
+            if (file_exists($fileWorker)) {
+                $content = file_get_contents($fileWorker);
                 $workerLast = unserialize($content);
                 if (empty($workerLast["callable"])) {
-                    return $last;
+                    return $randomWorker;
                 }
             }
         }
