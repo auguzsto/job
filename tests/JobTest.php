@@ -107,12 +107,28 @@ final class JobTest extends TestCase
         Worker::up(0);
     }
 
-    // public function testDownAllActiveWorkers(): void
-    // {
-    //     $result = Worker::down();
-    //     $this->assertIsArray($result);
-    //     $total = count($result);
-    //     $this->assertEquals(11, $total);
-    // }
+    public function testDownAllActiveWorkers(): void
+    {
+        $result = Worker::down();
+        $this->assertIsArray($result);
+        $total = count($result);
+        $this->assertEquals(11, $total);
+    }
+
+    public function testANewWorkerIsOnlyConstructedIfNecessary(): void
+    {
+        $workerId = null;
+        for ($i = 0; $i <= 5; $i++) { 
+            $job = new Job(Request::class, "slowBy", [1]);
+            $workerId = $job->execute();
+            sleep(2);
+        }
+
+        $result = file_exists(Worker::DIR . "/$workerId");
+        $this->assertTrue($result);
+
+        $result = file_exists(Worker::DIR . "/1");
+        $this->assertFalse($result);
+    }
     
 }
