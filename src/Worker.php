@@ -83,13 +83,12 @@ class Worker
         }
 
         if ($i > 0) {
-            $randomWorker = random_int(0, $i - 1);
-            $fileWorker = "$dirworker/$randomWorker";
-            if (file_exists($fileWorker)) {
-                $content = file_get_contents($fileWorker);
-                $workerLast = unserialize($content);
-                if (empty($workerLast["callable"])) {
-                    return $randomWorker;
+            $workers = self::workers();
+            foreach ($workers as $key => $id) {
+                $fileWorker = "$dirworker/$id";
+                $worker = unserialize(file_get_contents($fileWorker));
+                if (empty($worker["callable"])) {
+                    return $id;
                 }
             }
         }

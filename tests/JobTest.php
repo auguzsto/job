@@ -117,18 +117,28 @@ final class JobTest extends TestCase
 
     public function testANewWorkerIsOnlyConstructedIfNecessary(): void
     {
-        $workerId = null;
         for ($i = 0; $i <= 5; $i++) { 
-            $job = new Job(Request::class, "slowBy", [1]);
-            $workerId = $job->execute();
+            $job = new Job(Request::class, "slowBy", [4]);
+            $job->execute();
             sleep(2);
         }
 
-        $result = file_exists(Worker::DIR . "/$workerId");
+        $result = file_exists(Worker::DIR . "/0");
         $this->assertTrue($result);
 
         $result = file_exists(Worker::DIR . "/1");
+        $this->assertTrue($result);
+
+        $result = file_exists(Worker::DIR . "/2");
+        $this->assertTrue($result);
+
+        $result = file_exists(Worker::DIR . "/3");
         $this->assertFalse($result);
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        Worker::down();
     }
     
 }
