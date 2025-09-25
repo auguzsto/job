@@ -77,12 +77,11 @@ class Worker
             mkdir($dirworker);
         }
 
-        $i = count(self::workers());
-        if ($i > self::MAX_WORKERS) {
+        if (self::atMaximum()) {
             return random_int(0, self::MAX_WORKERS);
         }
 
-        if ($i > 0) {
+        if (self::thereAreActiveWorkers()) {
             $workers = self::workers();
             foreach ($workers as $key => $id) {
                 $fileWorker = "$dirworker/$id";
@@ -93,8 +92,29 @@ class Worker
             }
         }
 
-        self::up($i);
-        return $i;
+        $next = count(self::workers());
+        self::up($next);
+        return $next;
+    }
+
+    public static function atMaximum(): bool
+    {
+        $total = count(self::workers());
+        if ($total > self::MAX_WORKERS) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static function thereAreActiveWorkers(): bool
+    {
+        $total = count(self::workers());
+        if ($total > 0) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
