@@ -78,8 +78,6 @@ class Worker
         }
 
         $i = count(self::workers());
-        $fileWorker = "$dirworker/$i";
-
         if ($i > self::MAX_WORKERS) {
             return random_int(0, self::MAX_WORKERS);
         }
@@ -96,30 +94,14 @@ class Worker
             }
         }
 
-        $bin = self::BIN;
-        $class = self::class;
-        $method = "listen";
-        $classmethod = escapeshellarg("$class::$method");
-
-        $args = escapeshellarg($i);
-        $cmd = "php $bin $classmethod [$args] > /dev/null 2>&1 & echo $!";
-        $handle = popen($cmd, "r");
-        $buffer = fread($handle, 2096);
-        $pid = $buffer;
-        pclose($handle);
-
-        $content = [
-            "pid" => trim($pid),
-            "callable" => "",
-        ];
-        file_put_contents($fileWorker, serialize($content));
+        self::up($i);
         return $i;
     }
 
     /**
      * Manually create a worker if one does not exist.
      * @param int $id
-     * @return int
+     * @return void
      */
     public static function up(int $id): void
     {
