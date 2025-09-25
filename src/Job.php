@@ -20,11 +20,11 @@ class Job implements JobInterface
     public function execute(): int
     {
         try {
-            if (!$this->checkClassExists($this->class)) {
+            if (!class_exists($this->class)) {
                 throw new ClassNotExistsException("Class not found");
             }
 
-            if (!$this->checkMethodExists($this->class, $this->method)) {
+            if (!method_exists($this->class, $this->method)) {
                 throw new MethodNotExistsException("Method not found");
             }
             
@@ -45,23 +45,5 @@ class Job implements JobInterface
         } catch (JobException $th) {
             throw $th;
         }
-    }
-
-    private function checkMethodExists(string $class, string $method): bool
-    {
-        if (method_exists($class, $method)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private function checkClassExists(string $class): bool
-    {
-        if (class_exists($class)) {
-            return true;
-        }
-
-        return false;
     }
 }
