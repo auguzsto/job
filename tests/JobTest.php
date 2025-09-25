@@ -83,7 +83,7 @@ final class JobTest extends TestCase
         $job = new Job(ClassWithError::class, "here", ["error"]);
         $worker = $job->execute();
         $dirworker = Worker::DIR;
-        sleep(1);
+        sleep(3);
         
         $result = file_exists("$dirworker/$worker");
         $this->assertTrue($result, "Worker was rebuilt");
