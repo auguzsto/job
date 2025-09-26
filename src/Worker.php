@@ -33,24 +33,12 @@ class Worker
                 $methodReflection = new ReflectionMethod($class, $method);
 
                 if ($methodReflection->isStatic()) {
-                    if (empty($args)) {
-                        $methodReflection->invoke(null);
-                    }
-
-                    if (!empty($args)) {
-                        $methodReflection->invokeArgs(null, $args);
-                    }
+                   $methodReflection->invokeArgs(null, $args ?? []);
                 }
 
                 if (!$methodReflection->isStatic()) {
                     $instance = new $class();
-                    if (empty($args)) {
-                        $methodReflection->invoke($instance);
-                    }
-
-                    if (!empty($args)) {
-                        $methodReflection->invokeArgs($instance, $args);
-                    }
+                    $methodReflection->invokeArgs($instance, $args ?? []);
                 }
 
                 $worker["callable"] = "";
