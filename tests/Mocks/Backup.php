@@ -34,16 +34,4 @@ class Backup
         sleep($timesleep);
         file_put_contents("backup_big_with_args_object_$timesleep.txt", date("H:i:s"));
     }
-
-    public static function small(): void
-    {
-        sleep(1);
-        file_put_contents("backup_small_1.txt", date("H:i:s"));
-    }
-
-    public function smallBy(int $time): void
-    {
-        sleep($time);
-        file_put_contents("backup_smallBy_$time.txt", date("H:i:s"));
-    }
 }
