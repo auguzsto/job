@@ -14,6 +14,77 @@ use Auguzsto\Job\Exceptions\WorkerIdExceedsMaximumLimitException;
 
 final class JobTest extends TestCase
 {
+    private const string LOG_ERROR = "/tmp/php-job-error.log";
+
+    public function setUp(): void
+    {
+        if (file_exists(self::LOG_ERROR)) {
+            unlink(self::LOG_ERROR);
+        }
+    }
+
+    public function testRunningJobMethodStaticWithArgs(): void
+    {
+        $time = 1;
+        $wait = $time+1;
+        $job = new Job(Backup::class, "largerStaticWithArgs", [$time]);
+        $worker = $job->execute();
+        sleep($wait);
+        $this->assertIsInt($worker);
+
+        $result = file_exists("backup_static_with_args_large_$time.txt");
+        $this->assertTrue($result);
+    }
+
+    public function testRunningJobMethodStaticWithoutArgs(): void
+    {
+        $job = new Job(Backup::class, "largerStaticWithoutArgs");
+        $worker = $job->execute();
+        sleep(2);
+        $this->assertIsInt($worker);
+
+        $result = file_exists("backup_static_without_args_large_1.txt");
+        $this->assertTrue($result);
+    }
+
+    public function testRunningJobMethodNotStaticWithArgs(): void
+    {
+        $time = 1;
+        $wait = $time+1;
+        $job = new Job(Backup::class, "largerWithArgs", [$time]);
+        $worker = $job->execute();
+        $this->assertIsInt($worker);
+        sleep($wait);
+
+        $result = file_exists("backup_large_with_args_$time.txt");
+        $this->assertTrue($result);
+    }
+
+    public function testRunningJobMethodNotStaticWithoutArgs(): void
+    {
+        $job = new Job(Backup::class, "larger");
+        $worker = $job->execute();
+        $this->assertIsInt($worker);
+        sleep(2);
+
+        $result = file_exists("backup_large_1.txt");
+        $this->assertTrue($result);
+    }
+
+    public function testJobRunningMethodNotStaticAndArgsWithObject(): void
+    {
+        $time = new Time(2);
+        $wait = $time->get()+1;
+        $job = new Job(Backup::class, "big", [$time]);
+        $worker = $job->execute();
+        $this->assertIsInt($worker);
+
+        sleep($wait);
+        $result = file_exists("backup_big_with_args_object_{$time->get()}.txt");
+        $this->assertTrue($result);
+    }
+
+
     public function testRegisterWorker(): void
     {
         $job = new Job(Request::class, "slowBy", [1]);
@@ -36,15 +107,15 @@ final class JobTest extends TestCase
     public function testJobPerformedConcorrency(): void
     {
         $jobs = new GroupJob([
-            new Job(Backup::class, "larger", [1]),
-            new Job(Backup::class, "larger", [5]),
-            new Job(Backup::class, "larger", [8]),
+            new Job(Backup::class, "largerWithArgs", [1]),
+            new Job(Backup::class, "largerWithArgs", [5]),
+            new Job(Backup::class, "largerWithArgs", [8]),
         ]);
         $workers = $jobs->execute();
         $this->assertIsArray($workers);
         $this->assertEquals(3, count($workers));
-        sleep(3);
-        $result = file_exists("backup_large_1.txt");
+        sleep(2);
+        $result = file_exists("backup_large_with_args_1.txt");
         $this->assertTrue($result);
 
     }
@@ -56,19 +127,7 @@ final class JobTest extends TestCase
         $job = new Job(Request::class, "methodNotExists");
         $job->execute();
     }
-
-    public function testRunningJobWithArgs(): void
-    {
-        $job = new Job(Request::class, "slowBy", [5]);
-        $this->assertIsInt($job->execute());
-    }
-
-    public function testJobRunningArgsObjectInstance(): void
-    {
-        $job = new Job(Backup::class, "big", [new Time(2)]);
-        $worker = $job->execute();
-        $this->assertIsInt($worker);
-    }
+    
     public function testReturnArrayWithActiveWorkers(): void
     {
         $result = Worker::workers();
@@ -79,7 +138,6 @@ final class JobTest extends TestCase
 
     public function testRebuildWorkerThatFailedExecution(): void
     {
-        unlink("/tmp/php-job-error.log");
         $job = new Job(ClassWithError::class, "here", ["error"]);
         $worker = $job->execute();
         $dirworker = Worker::DIR;
@@ -91,8 +149,10 @@ final class JobTest extends TestCase
 
     public function testBinGeneratesLogWhenExecutionFails(): void
     {
-        $result = file_exists("/tmp/php-job-error.log");
-        $this->assertTrue($result);
+        $job = new Job(ClassWithError::class, "here", ["error"]);
+        $job->execute();
+        sleep(1);
+        $this->assertTrue(file_exists(self::LOG_ERROR), "Error log");
     }
 
     public function testThrowWorkerIdExceedsMaximumLimit(): void
