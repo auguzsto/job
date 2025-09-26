@@ -7,6 +7,6 @@
         }
     },
     "require": {
-        "auguzsto/job": "^1.0.6"
+        "auguzsto/job": "^1.0.7"
     }
 }
