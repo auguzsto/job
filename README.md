@@ -62,25 +62,17 @@ use Auguzsto\Job\Tests\Request;
     $worker = $job->execute();
     echo $worker;
 ```
-Execute a group jobs.
+Execute by include injection.
 ```php
 <?php
 require_once __DIR__ . "/../vendor/autoload.php";
 
-use Auguzsto\Job\GroupJob;
 use Auguzsto\Job\Job;
-use Auguzsto\Job\Tests\Request;
-use Auguzsto\Job\Tests\Backup;
-use Auguzsto\Job\Tests\Time;
 
-    $jobs = new GroupJob([
-        new Job(Request::class, "slow"),
-        new Job(Request::class, "slowBy", [25]),
-        new Job(Backup::class, "big", [new Time(1)]),
-        new Job(Request::class, "slow"),
-    ]);
-    $workers = $jobs->execute();
-    print_r($workers);
+    $job = new Job("Request", "slowBy", [35]);
+    $job->include(__DIR__ . "/Request.php");
+    $worker = $job->execute();
+    echo $worker;
 ```
 When the job sends a task to the worker, the id of this worker is returned.
 
