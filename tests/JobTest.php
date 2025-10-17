@@ -1,5 +1,6 @@
 <?php
 
+use Auguzsto\Job\Exceptions\IncludeNotExistsException;
 use Auguzsto\Job\Job;
 use Auguzsto\Job\Worker;
 use Auguzsto\Job\GroupJob;
@@ -106,12 +107,19 @@ final class JobTest extends TestCase
 
     public function testJobPerformedConcorrency(): void
     {
-        $jobs = new GroupJob([
+        
+        $workers = [];
+        $jobs = [
             new Job(Backup::class, "largerWithArgs", [1]),
             new Job(Backup::class, "largerWithArgs", [5]),
             new Job(Backup::class, "largerWithArgs", [8]),
-        ]);
-        $workers = $jobs->execute();
+        ];
+        
+        foreach ($jobs as $key => $job) {
+            $worker = $job->execute();
+            array_push($workers, $worker);
+        }
+
         $this->assertIsArray($workers);
         $this->assertEquals(3, count($workers));
         sleep(2);
@@ -194,6 +202,26 @@ final class JobTest extends TestCase
 
         $result = file_exists(Worker::DIR . "/3");
         $this->assertFalse($result);
+    }
+
+    public function testThrowIncludeNotExistsException(): void
+    {
+        $this->expectException(IncludeNotExistsException::class);
+
+        $job = new Job("Includes", "run", ["testing"]);
+        $job->include(__DIR__ . "/Mocks/IncludeNotExists.php");
+        $job->execute();
+    }
+
+    public function testExecuteClassAndMethodByIncludeInjection(): void
+    {
+        $job = new Job("Includes", "run", ["testing"]);
+        $job->include(__DIR__ . "/Mocks/Includes.php");
+        $job->execute();
+        sleep(1);
+        
+        $result = file_exists("include_tests.txt");
+        $this->assertTrue($result);
     }
 
     public static function tearDownAfterClass(): void

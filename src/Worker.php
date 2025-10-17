@@ -29,7 +29,11 @@ class Worker
                     continue;
                 }
 
-                [$class, $method, $args] = $worker["callable"];
+                [$class, $method, $args, $include] = $worker["callable"];
+                if (!empty($include)) {
+                    require_once $include;
+                }
+
                 $methodReflection = new ReflectionMethod($class, $method);
 
                 if ($methodReflection->isStatic()) {
