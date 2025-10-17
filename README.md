@@ -70,7 +70,7 @@ require_once __DIR__ . "/../vendor/autoload.php";
 use Auguzsto\Job\Job;
 
     $job = new Job("Request", "slowBy", [35]);
-    $job->include(__DIR__ . "/Request.php");
+    $job->include(__DIR__ . "/Tests/Request.php");
     $worker = $job->execute();
     echo $worker;
 ```
