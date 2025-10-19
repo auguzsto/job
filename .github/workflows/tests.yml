@@ -21,4 +21,4 @@ jobs:
           version: 12
           bootstrap: vendor/autoload.php
           configuration: phpunit.xml
-          args: --coverage-text
+          args: tests
